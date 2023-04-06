@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"1a1086c6-18a2-45d1-a397-0320d1f8cfc7",
+	"author":	"schneik",
+	"description":	{
+		"":	"Close and reopen the active Document,  aka refresh"
+	},
+	"version":	"0.1",
+	"runOnStartup":	false,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}
