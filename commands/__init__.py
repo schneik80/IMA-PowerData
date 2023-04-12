@@ -6,6 +6,7 @@
 from .refresh import entry as refresh
 from .autosave import entry as autosave
 from .getandupdate import entry as getandupdate
+from .relateddata import entry as relateddata
 
 # TODO add your imported modules to this list.
 # Fusion will automatically call the start() and stop() functions.
@@ -13,8 +14,8 @@ commands = [
     refresh,
     autosave,
     getandupdate,
+    relateddata,
 ]
-
 
 # Assumes you defined a "start" function in each of your modules.
 # The start function will be run when the add-in is started.

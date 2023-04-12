@@ -7,11 +7,9 @@ ui = app.userInterface
 
 
 # TODO *** Specify the command identity information. ***
-CMD_ID = f'{config.COMPANY_NAME}_{config.ADDIN_NAME}'
+CMD_ID = 'PT-Refresh'
 CMD_NAME = 'Refresh Active Document'
 CMD_Description = 'Close and reopen the active document to get new versions from Team Hub'
-
-
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', '')
