@@ -7,6 +7,8 @@ from .refresh import entry as refresh
 from .autosave import entry as autosave
 from .getandupdate import entry as getandupdate
 from .relateddata import entry as relateddata
+from .exportgraphviz import entry as exportgraphviz
+from .exportmermaid import entry as exportmermaid
 
 # TODO add your imported modules to this list.
 # Fusion will automatically call the start() and stop() functions.
@@ -15,6 +17,8 @@ commands = [
     autosave,
     getandupdate,
     relateddata,
+    exportgraphviz,
+    exportmermaid,
 ]
 
 # Assumes you defined a "start" function in each of your modules.

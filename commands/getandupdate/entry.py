@@ -8,11 +8,11 @@ ui = app.userInterface
 
 
 # TODO *** Specify the command identity information. ***
+CMD_ID = 'Pt-GetandUpdate'
 CMD_NAME = 'Get and Update'
 CMD_Description = (
     "Get any new versions and then update all out-of-date assembly contexts."
 )
-CMD_ID = 'Pt-GetandUpdate'
 
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".

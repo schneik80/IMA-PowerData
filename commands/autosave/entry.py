@@ -8,10 +8,10 @@ ui = app.userInterface
 
 
 # TODO *** Specify the command identity information. ***
-
+CMD_ID = 'PT-AutoSave'
 CMD_NAME = 'Local Recovery Save'
 CMD_Description = 'Save as local recovery file'
-CMD_ID = 'PT-AutoSave'
+
 
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
