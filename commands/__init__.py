@@ -18,7 +18,7 @@ commands = [
     getandupdate,
     relateddata,
     exportgraphviz,
-    exportmermaid,
+    exportmermaid
 ]
 
 # Assumes you defined a "start" function in each of your modules.

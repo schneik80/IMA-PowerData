@@ -1,7 +1,9 @@
 import adsk.core
 import os
 from ...lib import fusion360utils as futil
-from ... import config
+import traceback
+import re
+
 
 app = adsk.core.Application.get()
 ui = app.userInterface

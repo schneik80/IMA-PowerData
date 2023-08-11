@@ -4,8 +4,10 @@
 
 import adsk.core
 import os
+import traceback
 from ...lib import fusion360utils as futil
 from ... import config
+
 
 app = adsk.core.Application.get()
 ui = app.userInterface
@@ -15,9 +17,6 @@ CMD_ID = 'PT-Exportgraphviz'
 CMD_NAME = 'Graphiz Export'
 CMD_Description = 'Export Active Document as Graphviz dot diagram'
 
-# Resource location for command icons, here we assume a sub folder in this directory named "resources".
-ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', '')
-
 # Local list of event handlers used to maintain a reference so
 # they are not released and garbage collected.
 local_handlers = []
@@ -26,7 +25,7 @@ local_handlers = []
 # Executed when add-in is run.
 def start():
     # Create a command Definition.
-    cmd_def = ui.commandDefinitions.addButtonDefinition(CMD_ID, CMD_NAME, CMD_Description, ICON_FOLDER)
+    cmd_def = ui.commandDefinitions.addButtonDefinition(CMD_ID, CMD_NAME, CMD_Description )
 
     # Define an event handler for the command created event. It will be called when the button is clicked.
     futil.add_handler(cmd_def.commandCreated, command_created)
@@ -65,9 +64,6 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
  
     ui = None
     try:
-        app = adsk.core.Application.get()
-        ui = app.userInterface
-
         product = app.activeProduct
         design = adsk.fusion.Design.cast(product)
         if not design:
