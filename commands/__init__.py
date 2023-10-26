@@ -3,23 +3,29 @@
 # TODO Import the modules corresponding to the commands you created.
 # If you want to add an additional command, duplicate one of the existing directories and import it here.
 # You need to use aliases (import "entry" as "my_module") assuming you have the default module named "entry".
-from .refresh import entry as refresh
+from .assemblystats import entry as assemblystats
 from .autosave import entry as autosave
+from .docinfo import entry as docinfo
+from .refresh import entry as refresh
 from .getandupdate import entry as getandupdate
-from .relateddata import entry as relateddata
+
+# from .relateddata import entry as relateddata
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
 
 # TODO add your imported modules to this list.
 # Fusion will automatically call the start() and stop() functions.
 commands = [
-    refresh,
+    assemblystats,
     autosave,
+    docinfo,
+    refresh,
     getandupdate,
-    relateddata,
+    # relateddata,
     exportgraphviz,
-    exportmermaid
+    exportmermaid,
 ]
+
 
 # Assumes you defined a "start" function in each of your modules.
 # The start function will be run when the add-in is started.

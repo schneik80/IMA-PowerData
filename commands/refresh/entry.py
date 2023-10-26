@@ -44,7 +44,7 @@ def stop():
     # Get the various UI elements for this command
     qat = ui.toolbars.itemById('QAT')
     fileDropDown = qat.controls.itemById('FileSubMenuCommand')
-    command_control = fileDropDown.commandControlByIdForPanel(CMD_ID)
+    command_control = fileDropDown.controls.itemById(CMD_ID)
     command_definition = ui.commandDefinitions.itemById(CMD_ID)
 
     # Delete the button command control

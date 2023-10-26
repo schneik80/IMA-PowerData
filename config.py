@@ -22,8 +22,8 @@ sample_palette_id = f"{COMPANY_NAME}_{ADDIN_NAME}_palette_id"
 
 design_workspace = 'FusionSolidEnvironment'
 tools_tab_id = "ToolsTab"
-my_tab_name = "test"
+my_tab_name = "Power Data Tools"
 
 my_panel_id = f'{ADDIN_NAME}_panel_2'
-my_panel_name = ADDIN_NAME
+my_panel_name = "Tools"
 my_panel_after = ''
