@@ -68,15 +68,15 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
 
 
 def command_execute(args: adsk.core.CommandCreatedEventArgs):
-    # this handles the document close and reopen
+    # this handles the relationship export
     try:
+        app = adsk.core.Application.get()
+        ui = app.userInterface
+
         product = app.activeProduct
         design = adsk.fusion.Design.cast(product)
         if not design:
-            ui.messageBox(
-                "Active document is not a Fusion design document",
-                "Incorrect Document Type",
-            )
+            ui.messageBox("No active Fusion design", "No Design")
             return
 
         # Get the root component of the active design.
@@ -84,39 +84,27 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Create the title for the output.
         parentOcc = design.parentDocument.name
-
-        resultString = (
-            'digraph "' + parentOcc + '" {' + "\n"
-        )  # Change layout engine here
-        resultString += 'layout="dot";' + "\n"
-        resultString += "node[width=.75,height=.5,fontsize=9]" + "\n"
-        resultString += "nodesep=.2" + "\n"
-        resultString += "ranksep=3" + "\n"
-        resultString += "concentrate=false" + "\n"
-        resultString += 'mode="ipsep"' + "\n"
-        resultString += "diredgeconstraints=true" + "\n"
-        resultString += 'overlap="false"' + "\n"
+        resultString = "graph LR" + "\n"
+        # resultString += parentOcc + '\n'
 
         # Call the recursive function to traverse the assembly and build the output string.
         resultString = traverseAssembly(
             parentOcc, rootComp.occurrences.asList, 1, resultString
         )
 
-        resultString += "}"
-
+        msg = ""
         # Set styles of file dialog.
         folderDlg = ui.createFolderDialog()
-        folderDlg.title = "Choose Folder to save Graphviz Graph"
+        folderDlg.title = "Choose Folder to save Mermai Graph"
 
         # Show file save dialog
         dlgResult = folderDlg.showDialog()
         if dlgResult == adsk.core.DialogResults.DialogOK:
-            filepath = os.path.join(folderDlg.folder, parentOcc + ".dot")
+            filepath = os.path.join(folderDlg.folder, parentOcc + ".mmd")
             # Write the results to the file
             with open(filepath, "w") as f:
                 f.write(resultString)
-            ui.messageBox("Graph dot file saved at: " + filepath)
-
+            ui.messageBox("Graph saved at: " + filepath, parentOcc, 0, 2)
         else:
             return
 
@@ -136,12 +124,17 @@ def traverseAssembly(parent, occurrences, currentLevel, inputString):
     for i in range(0, occurrences.count):
         occ = occurrences.item(i)
 
-        foo1 = occ.name
-        foo2 = foo1.rsplit(" ", 1)[0]  # trim version
+        foo2 = occ.name
+        foo2 = foo2.replace("-", "_")
+        foo2 = foo2.replace('"', "")
 
-        parent1 = parent.rsplit(" ", 1)[0]  # trim version
+        parent = parent.replace("-", "_")
 
-        foo = '"' + parent1 + '"->"' + foo2 + '"' + " ;" + "\n"
+        foo = parent + " --> " + foo2 + "\n"
+        foo = foo.replace(" ", "")
+        foo = foo.replace("(", "")
+        foo = foo.replace(")", "")
+        foo = foo.replace('"', "")
 
         inputString += foo
 
