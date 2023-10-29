@@ -8,7 +8,7 @@ ui = app.userInterface
 
 showversion = True  # show versions in xref component names, default is off
 showsubs = False  # show the subassemblies in list, for flat BOM default is off. Children are still displayed this only affects the sub itself
-docname = "FOO"  # a default name
+docname = ""  # a default name
 
 CMD_NAME = "Export BOM as CSV"
 CMD_ID = "PT-exportbom"
@@ -124,7 +124,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             elif input.id == "showsubs_":
                 showsubs = input.value
 
-        # Make sure we have a desing
+        # Make sure we have a design
         if not design:
             ui.messageBox("A Design Must be Active.", "BOM Export")
             return
@@ -177,7 +177,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         print("\n")
         print(docname + " BOM\n")
         print("Display Name, " + "Part Number, " + "Material, " + "Count" + "UOM")
-        print(walkThrough(bom))
+        print(traverseAssembly(bom))
 
         # Display the BOM Save Dialog
         fileDialog = ui.createFileDialog()
@@ -195,7 +195,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         output = open(filename, "w")
         output.writelines(docname + " BOM\n")
         output.writelines("Display Name," + "Part Number," + "Material," + "Count\n")
-        output.writelines(walkThrough(bom))
+        output.writelines(traverseAssembly(bom))
         output.close()
 
         # confirm save
@@ -217,7 +217,7 @@ def command_destroy(args: adsk.core.CommandEventArgs):
 
 
 # walk thru the assembly
-def walkThrough(bom):
+def traverseAssembly(bom):
     mStr = ""
     if showsubs == False:
         for item in bom:
@@ -228,9 +228,9 @@ def walkThrough(bom):
                     + '","'
                     + str(item["pn"])
                     + '","'
-                    + str(item["material"])
+                    + str(item["Material"])
                     + '",'
-                    + str(item["instances"])
+                    + str(item["Instances"])
                     + ",EA"
                     + "\n"
                 )
@@ -243,9 +243,9 @@ def walkThrough(bom):
                 + '","'
                 + str(item["pn"])
                 + '","'
-                + str(item["material"])
+                + str(item["Material"])
                 + '",'
-                + str(item["instances"])
+                + str(item["Instances"])
                 + ",EA"
                 + "\n"
             )
