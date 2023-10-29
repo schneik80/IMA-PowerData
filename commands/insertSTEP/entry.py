@@ -6,9 +6,9 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "Related Data"
-CMD_ID = "PT-RelatedData"
-CMD_Description = "See and navigate to related data for the active document"
+CMD_NAME = "Insert STEP File"
+CMD_ID = "PT-insertSTEP"
+CMD_Description = "Insert a STEP file into the active Design Document"
 IS_PROMOTED = False
 
 # Global variables by referencing values from /config.py
@@ -86,43 +86,38 @@ def stop():
 
 # Function to be called when a user clicks the corresponding button in the UI.
 def command_created(args: adsk.core.CommandCreatedEventArgs):
-    futil.log(f"{CMD_NAME} Command Created Event")
+    futil.log(f"{CMD_NAME} Command Started Event")
+    ui = None
+    try:
+        app = adsk.core.Application.get()
+        ui = app.userInterface
+        product = app.activeProduct
+        design = adsk.fusion.Design.cast(product)
 
-    # Connect to the events that are needed by this command.
-    futil.add_handler(
-        args.command.execute, command_execute, local_handlers=local_handlers
-    )
-    futil.add_handler(
-        args.command.destroy, command_destroy, local_handlers=local_handlers
-    )
+        # Check a Design document is active.
+        if not design:
+            ui.messageBox("No active Fusion design", "No Design")
+            return
 
-    inputs = args.command.commandInputs
+        # Set styles of file dialog.
+        fileDlg = ui.createFileDialog()
+        fileDlg.isMultiSelectEnabled = False
+        fileDlg.title = "Fusion Insert STEP"
+        fileDlg.filter = "*.stp, *.step"
 
-    # Simple text input box
-    inputs.addTextBoxCommandInput("text_box", "Some Text", "Enter some text", 1, False)
+        # Show file open dialog
+        dlgResult = fileDlg.showOpen()
+        if dlgResult == adsk.core.DialogResults.DialogOK:
+            filename = fileDlg.filename
+        else:
+            return
 
-    # Create a value input field and set the default using 1 unit of the default length unit.
-    defaultLengthUnits = app.activeProduct.unitsManager.defaultLengthUnits
-    default_value = adsk.core.ValueInput.createByString("1")
-    inputs.addValueInput("value_input", "Some Value", defaultLengthUnits, default_value)
+        filename = '"' + filename + '"'
+        command = f"Fusion.ImportComponent {filename}"
+        app.executeTextCommand(command)
 
+    except:
+        if ui:
+            ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
-# This function will be called when the user clicks the OK button in the command dialog.
-def command_execute(args: adsk.core.CommandEventArgs):
-    futil.log(f"{CMD_NAME} Command Execute Event")
-
-    inputs = args.command.commandInputs
-    text_box: adsk.core.TextBoxCommandInput = inputs.itemById("text_box")
-    value_input: adsk.core.ValueCommandInput = inputs.itemById("value_input")
-
-    text = text_box.text
-    expression = value_input.expression
-    msg = f"Your text: {text}<br>Your value: {expression}"
-    ui.messageBox(msg)
-
-
-# This function will be called when the user completes the command.
-def command_destroy(args: adsk.core.CommandEventArgs):
-    global local_handlers
-    local_handlers = []
-    futil.log(f"{CMD_NAME} Command Destroy Event")
+    futil.log(f"{CMD_NAME} Command Completed Event")

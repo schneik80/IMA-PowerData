@@ -111,7 +111,10 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         doc = app.activeDocument
         if not doc.isSaved:
             ui.messageBox(
-                "The active document must be saved before running this script."
+                "The active document must be saved before running this script.",
+                "Please Save",
+                0,
+                3,
             )
             return
 

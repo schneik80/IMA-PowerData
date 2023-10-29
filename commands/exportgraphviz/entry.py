@@ -59,11 +59,6 @@ def stop():
 def command_created(args: adsk.core.CommandCreatedEventArgs):
     # Connect to the events that are needed by this command.
     futil.add_handler(
-        args.command.destroy, command_destroy, local_handlers=local_handlers
-    )
-
-    # Connect to the events that are needed by this command.
-    futil.add_handler(
         args.command.execute, command_execute, local_handlers=local_handlers
     )
     futil.add_handler(

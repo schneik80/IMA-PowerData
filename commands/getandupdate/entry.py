@@ -69,6 +69,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
 
 
 def command_execute(args: adsk.core.CommandCreatedEventArgs):
+    futil.log(f"{CMD_NAME} Command Execute Event")
     # this handles the update and get latest
     ui = None
     try:
