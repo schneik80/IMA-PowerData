@@ -161,7 +161,6 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             f"<b>Document Name:</b> {docName} <br>"
             f"<b>Document ID:</b> {docID}<br>"
             f"<b>Document Version:</b> Version {docVersion} of {docVersions}<br>"
-            # f"<b>Last Saved By:</b> {docVersionUser}<br>"
             f"<b>Version Comment:</b> ''{docVersionComment}''<br>"
             f"<b>Version Build:</b> Saved by Fusion build {docVersionBuild} (current build is {appVersionBuild})"
         )

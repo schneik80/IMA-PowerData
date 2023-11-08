@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-showversion = True  # show versions in xref component names, default is off
+showversion = True  # show versions in xref component names, default is on
 showsubs = False  # show the subassemblies in list, for flat BOM default is off. Children are still displayed this only affects the sub itself
 docname = ""  # a default name
 
@@ -149,7 +149,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
                 jj += 1
 
             if jj == len(bom):
-                # Modify the name if versions are OFF and an occurance is an xref
+                # Modify the name if versions are OFF and an occurrence is an xref
                 if showversion == False and refocc == True:
                     longname = comp.name
                     shortname = " v".join(longname.split(" v")[:-1])
