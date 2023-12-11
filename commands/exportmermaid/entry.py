@@ -84,8 +84,9 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Create the title for the output.
         parentOcc = design.parentDocument.name
-        resultString = "graph LR" + "\n"
-        # resultString += parentOcc + '\n'
+        resultString = "%%{\ninit: {\n'theme':'base',\n'themeVariables': {\n'primaryColor': '#f0f0f0',\n'primaryBorderColor': '#454F61',\n'lineColor': '#59cff0',\n'tertiaryColor': '#e1ecf5',\n'fontSize': '14px'\n}\n}\n}%%\n"
+        resultString += "graph LR\n"
+        # resultString += sParentOcc + '\n'
 
         # Call the recursive function to traverse the assembly and build the output string.
         resultString = traverseAssembly(
@@ -120,23 +121,32 @@ def command_destroy(args: adsk.core.CommandEventArgs):
     futil.log(f"{CMD_NAME} Command Destroy Event")
 
 
-def traverseAssembly(parent, occurrences, currentLevel, inputString):
+def traverseAssembly(sParent, occurrences, currentLevel, inputString):
     for i in range(0, occurrences.count):
         occ = occurrences.item(i)
 
-        foo2 = occ.name
-        foo2 = foo2.replace("-", "_")
-        foo2 = foo2.replace('"', "")
+        sItem = occ.name
+        sItem = sItem.replace("-", "_")
+        sItem = sItem.replace('"', "")
+        sItem = sItem.replace("=", "")
+        sItem = sItem.replace("(", "")
+        sItem = sItem.replace(")", "")
+        sItem = sItem.replace("<", "_")
+        sItem = sItem.replace(">", "_")
 
-        parent = parent.replace("-", "_")
+        sParent = sParent.replace("-", "_")
+        sParent = sParent.replace("-", "_")
+        sParent = sParent.replace('"', "")
+        sParent = sParent.replace("=", "")
+        sParent = sParent.replace("(", "")
+        sParent = sParent.replace(")", "")
+        sParent = sParent.replace("<", "_")
+        sParent = sParent.replace(">", "_")
 
-        foo = parent + " --> " + foo2 + "\n"
-        foo = foo.replace(" ", "")
-        foo = foo.replace("(", "")
-        foo = foo.replace(")", "")
-        foo = foo.replace('"', "")
+        sRelationship = sParent + " --> " + sItem + "\n"
+        sRelationship = sRelationship.replace(" ", "")
 
-        inputString += foo
+        inputString += sRelationship
 
         if occ.childOccurrences:
             inputString = traverseAssembly(
