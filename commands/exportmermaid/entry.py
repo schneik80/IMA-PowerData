@@ -95,7 +95,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         msg = ""
         # Set styles of file dialog.
         folderDlg = ui.createFolderDialog()
-        folderDlg.title = "Choose Folder to save Mermai Graph"
+        folderDlg.title = "Choose Folder to save Mermaid Graph"
 
         # Show file save dialog
         dlgResult = folderDlg.showDialog()
