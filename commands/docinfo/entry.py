@@ -11,7 +11,7 @@ CMD_ID = "PT-docinfo"
 CMD_Description = (
     "Document data management Id`s for document in Autodesk`s Fusion Industry Cloud"
 )
-IS_PROMOTED = False
+IS_PROMOTED = True
 
 # Global variables by referencing values from /config.py
 WORKSPACE_ID = config.design_workspace
@@ -119,7 +119,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             return
 
         root_name = design.rootComponent.name  # Get root component name.
-        mTitle = f"{root_name} Component Statistics"
+        mTitle = f"{root_name} Document Info"
 
         docHub = app.data.activeHub.id
         docHubName = app.data.activeHub.name
@@ -165,7 +165,23 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             f"<b>Version Build:</b> Saved by Fusion build {docVersionBuild} (current build is {appVersionBuild})"
         )
 
-        ui.messageBox(resultString, mTitle, 0, 2)
+        if app.activeDocument.version == app.version:
+            VersionMigration = False
+            messageIcon = 2
+        else:
+            VersionMigration = True
+            messageIcon = 3
+
+        if VersionMigration == True:
+            mTitle = f"{root_name} Document Info - Document will migrate on save"
+            resultString += (
+                f"<br>"
+                f"<br>"
+                f"<b>Document will migrate to new schema {appVersionBuild} if saved.</b><br>"
+                f"Team members must be on the same client version to work with this document after save."
+            )
+
+        ui.messageBox(resultString, mTitle, 0, messageIcon)
 
     except:
         if ui:
