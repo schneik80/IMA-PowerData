@@ -1,5 +1,5 @@
 import adsk.core, adsk.fusion
-import os, traceback
+import os, traceback, subprocess
 from ...lib import fusion360utils as futil
 from ... import config
 
@@ -117,6 +117,9 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             with open(filepath, "w") as f:
                 f.write(resultString)
             ui.messageBox("Graph dot file saved at: " + filepath)
+            writestring = 'open -a /Applications/Graphviz.app' + ' "' + filepath + '"'
+            futil.log(writestring)
+            os.system(writestring)
 
         else:
             return

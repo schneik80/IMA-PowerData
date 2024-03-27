@@ -113,8 +113,15 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         command = args.firingEvent.sender
         inputs = command.commandInputs
 
-        design = app.activeProduct
-        docname = app.activeDocument.name
+        product = app.activeProduct
+        design = adsk.fusion.Design.cast(product)
+        if not design:
+            ui.messageBox("A Design Must be Active.", "BOM Export")
+            return
+
+        # Get all occurrences in the rootComp component of the active design
+        rootComp = design.rootComponent
+        occs = rootComp.allOccurrences
 
         for input in inputs:
             if input.id == "docname_":
@@ -123,15 +130,6 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
                 showversion = input.value
             elif input.id == "showsubs_":
                 showsubs = input.value
-
-        # Make sure we have a design
-        if not design:
-            ui.messageBox("A Design Must be Active.", "BOM Export")
-            return
-
-        # Get all occurrences in the root component of the active design
-        root = design.rootComponent
-        occs = root.allOccurrences
 
         # Gather information about each unique component
         bom = []
@@ -173,35 +171,32 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
                         "sub": occtype,
                     }
                 )
-        # Display the BOM in the console
-        print("\n")
-        print(docname + " BOM\n")
-        print("Display Name, " + "Part Number, " + "Material, " + "Count" + "UOM")
-        print(traverseAssembly(bom))
 
-        # Display the BOM Save Dialog
-        fileDialog = ui.createFileDialog()
-        fileDialog.isMultiSelectEnabled = False
-        fileDialog.title = "Save " + docname + " BOM as cvs"
-        fileDialog.filter = "Text files (*.csv)"
-        fileDialog.filterIndex = 0
-        dialogResult = fileDialog.showSave()
-        if dialogResult == adsk.core.DialogResults.DialogOK:
-            filename = fileDialog.filename
+        # collect BOM data
+        parentOcc = design.parentDocument.name
+        resultString = parentOcc + " BOM\n"
+        resultString += "Display Name," + "Part Number," + "Material," + "Count\n"
+        resultString += traverseAssembly(bom)
+
+        # Display the BOM in the console
+        print(resultString)
+
+        # Set styles of file dialog.
+        folderDlg = ui.createFolderDialog()
+        folderDlg.title = "Choose Folder to save BOM CSV"
+
+        # Show file save dialog
+        dlgResult = folderDlg.showDialog()
+        if dlgResult == adsk.core.DialogResults.DialogOK:
+            filepath = os.path.join(folderDlg.folder, parentOcc + ".csv")
+            # Write the results to the file
+            with open(filepath, "w") as f:
+                f.write(resultString)
+            ui.messageBox("BOM saved at: " + filepath, parentOcc, 0, 2)
+            futil.log(f"BOM Saved at {filepath}")
         else:
             return
 
-        # Write the BOM
-        output = open(filename, "w")
-        output.writelines(docname + " BOM\n")
-        output.writelines("Display Name," + "Part Number," + "Material," + "Count\n")
-        output.writelines(traverseAssembly(bom))
-        output.close()
-
-        # confirm save
-        ui.messageBox("Document Saved to:\n" + filename, "", 0, 2)
-        # command = args.firingEvent.sender
-        # ui.messageBox(_('command: {} executed successfully').format(command.parentCommandDefinition.id))
     except:
         if ui:
             ui.messageBox(
@@ -228,9 +223,9 @@ def traverseAssembly(bom):
                     + '","'
                     + str(item["pn"])
                     + '","'
-                    + str(item["Material"])
+                    + str(item["material"])
                     + '",'
-                    + str(item["Instances"])
+                    + str(item["instances"])
                     + ",EA"
                     + "\n"
                 )
@@ -243,9 +238,9 @@ def traverseAssembly(bom):
                 + '","'
                 + str(item["pn"])
                 + '","'
-                + str(item["Material"])
+                + str(item["material"])
                 + '",'
-                + str(item["Instances"])
+                + str(item["instances"])
                 + ",EA"
                 + "\n"
             )

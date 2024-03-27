@@ -76,7 +76,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         product = app.activeProduct
         design = adsk.fusion.Design.cast(product)
         if not design:
-            ui.messageBox("No active Fusion design", "No Design")
+            ui.messageBox("A Design Must be Active.", "Mermaid Export")
             return
 
         # Get the root component of the active design.
