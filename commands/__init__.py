@@ -9,7 +9,7 @@ from .getandupdate import entry as getandupdate
 from .refresh import entry as refresh
 from .insertSTEP import entry as insertSTEP
 
-# from .relateddata import entry as relateddata
+from .relateddata import entry as relateddata
 from .exportbomcsv import entry as exportbomcsv
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
@@ -22,7 +22,7 @@ commands = [
     getandupdate,
     refresh,
     insertSTEP,
-    # relateddata,
+    relateddata,
     exportbomcsv,
     exportgraphviz,
     exportmermaid,
