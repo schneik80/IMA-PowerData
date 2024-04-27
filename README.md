@@ -1,4 +1,4 @@
-# Data Power Tools for Fusion v0.2
+# Data Power Tools for Fusion v0.3
 
 Make working as a team and with assemblies more productive.
 
@@ -57,5 +57,7 @@ Browse the local device and insert a STEP file into the active document.
 #### Related Data
 
 Create an assembly referencing the active document. The Assembly document is copied from a cloud project/folder allowing for created assemblies to be used for different disciplines and to have already saved information to automate workflows.
+
+The relate data tools are significantly improved over the stand-alone add-in.
 
 ---
