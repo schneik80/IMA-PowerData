@@ -38,11 +38,7 @@ local_handlers = []
 
 # Load project and folder from json
 def loadProject(__file__):
-    global app, data, docSeed, docTitle, myDocsDict
-
-    docActive = app.activeDocument
-    doc_with_ver = docActive.name
-    docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
+    global app, data, myDocsDict
 
     my_addin_path = os.path.dirname(os.path.realpath(__file__))
     my_projectfolder_json_path = os.path.join(my_addin_path, "data.json")
@@ -198,7 +194,10 @@ def command_execute(args: adsk.core.CommandEventArgs):
     global doc_urn, docSeed, docTitle
 
     docActiveUrn = app.data.findFileById(doc_urn)
+
     docActive = app.activeDocument
+    doc_with_ver = docActive.name
+    docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
     docTitleinput: adsk.core.StringValueCommandInput = (
         inputs.itemById("stringValueInput_")
     )
