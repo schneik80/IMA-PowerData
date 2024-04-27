@@ -38,53 +38,71 @@ local_handlers = []
 
 # Load project and folder from json
 def loadProject(__file__):
-    my_addin_path = os.path.dirname(os.path.realpath(__file__))
-    my_json_path = os.path.join(my_addin_path, "data.json")
-    global data, docSeed, docTitle, myDocsDict
-
-    with open(my_json_path) as json_file:
-        data = json.load(json_file)
-        print(data)
-
-    app = adsk.core.Application.get()
-    # ui = app.userInterface
-    my_hub = app.data.activeHub
-    my_project = my_hub.dataProjects.itemById(data["PROJECT_ID"])
-    if my_project is None:
-        ui.messageBox(
-            f"Project with id:{data['PROJECT_ID']} not found, review the readme file for instructions on how to set up the add-in."
-        )
-        return data
-    my_folder = my_project.rootFolder.dataFolders.itemById(data["FOLDER_ID"])
-    if my_folder is None:
-        ui.messageBox(
-            f"Folder with id:{data['FOLDER_ID']} not found, review the readme file for instructions on how to set up the add-in."
-        )
-        return data
+    global app, data, docSeed, docTitle, myDocsDict
 
     docActive = app.activeDocument
     doc_with_ver = docActive.name
     docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
 
-    myDocsDictUnsorted = {}
-    for data_file in my_folder.dataFiles:
-        if data_file.fileExtension == "f3d":
-            dname = data_file.name + "dict"
-            myDocsDictUnsorted.update(
-                {
-                    dname: {
-                        "name": data_file.name,
-                        "urn": data_file.id,
-                    }
-                }
+    my_addin_path = os.path.dirname(os.path.realpath(__file__))
+    my_projectfolder_json_path = os.path.join(my_addin_path, "data.json")
+    my_docs_json_path = os.path.join(my_addin_path, "docs.json")
+    
+    #check if the documents json has been created
+    docsExist = os.path.isfile(my_docs_json_path)
+    futil.log(f'{CMD_NAME} Doc Json Exists: {docsExist}')
+
+    if docsExist == False:
+
+        with open(my_projectfolder_json_path) as json_file:
+            data = json.load(json_file)
+
+        app = adsk.core.Application.get()
+        # ui = app.userInterface
+        my_hub = app.data.activeHub
+        my_project = my_hub.dataProjects.itemById(data["PROJECT_ID"])
+        if my_project is None:
+            ui.messageBox(
+                f"Project with id:{data['PROJECT_ID']} not found, review the readme file for instructions on how to set up the add-in."
             )
+            return data
+        my_folder = my_project.rootFolder.dataFolders.itemById(data["FOLDER_ID"])
+        if my_folder is None:
+            ui.messageBox(
+                f"Folder with id:{data['FOLDER_ID']} not found, review the readme file for instructions on how to set up the add-in."
+            )
+            return data
 
-    myDocsDict = dict(sorted(myDocsDictUnsorted.items()))
-    futil.log(f'{CMD_NAME} Doc Data: {myDocsDict}')
-    ...
+        myDocsDictUnsorted = {}
+        for data_file in my_folder.dataFiles:
+            if data_file.fileExtension == "f3d":
+                dname = data_file.name + "dict"
+                myDocsDictUnsorted.update(
+                    {
+                        dname: {
+                            "name": data_file.name,
+                            "urn": data_file.id,
+                        }
+                    }
+                )
 
-    return data
+        myDocsDict = dict(sorted(myDocsDictUnsorted.items()))
+        futil.log(f'{CMD_NAME} Doc Data Created: {myDocsDict}')
+        ...
 
+        myDocsJson = json.dumps(myDocsDict)
+        with open(my_docs_json_path, "w") as f:
+            f.write(myDocsJson)
+            futil.log(f'{CMD_NAME} Doc Json Saved')
+    else:
+
+        with open(my_docs_json_path) as json_file:
+            myDocsDict = json.load(json_file)
+            futil.log(f'{CMD_NAME} Doc Data Loaded: {myDocsDict}')
+
+
+        return
+    
 data = loadProject(__file__)
 
 # Executed when add-in is run.
