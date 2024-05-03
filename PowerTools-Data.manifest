@@ -6,8 +6,8 @@
 	"description":	{
 		"":	"Utilities to make working with mechanical designs more productive"
 	},
-	"version":	"0.1",
-	"runOnStartup":	false,
+	"version":	"0.3",
+	"runOnStartup":	true,
 	"supportedOS":	"windows|mac",
 	"editEnabled":	true
 } 
