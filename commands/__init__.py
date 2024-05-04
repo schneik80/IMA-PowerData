@@ -5,27 +5,28 @@
 from .assemblystats import entry as assemblystats
 from .autosave import entry as autosave
 from .docinfo import entry as docinfo
-from .getandupdate import entry as getandupdate
-from .refresh import entry as refresh
-from .insertSTEP import entry as insertSTEP
-
-from .relateddata import entry as relateddata
 from .exportbomcsv import entry as exportbomcsv
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
+from .externalizeComps import entry as externalize
+from .getandupdate import entry as getandupdate
+from .insertSTEP import entry as insertSTEP
+from .refresh import entry as refresh
+from .relateddata import entry as relateddata
 
 # Fusion will automatically call the start() and stop() functions.
 commands = [
     assemblystats,
     autosave,
     docinfo,
+    exportbomcsv,
+    exportgraphviz,
+    exportmermaid,
+    externalize,
     getandupdate,
     refresh,
     insertSTEP,
     relateddata,
-    exportbomcsv,
-    exportgraphviz,
-    exportmermaid,
 ]
 
 
