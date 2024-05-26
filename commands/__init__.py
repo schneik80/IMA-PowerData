@@ -10,6 +10,7 @@ from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
 from .externalizeComps import entry as externalize
 from .getandupdate import entry as getandupdate
+from .history import entry as history
 from .insertSTEP import entry as insertSTEP
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
@@ -24,6 +25,7 @@ commands = [
     exportmermaid,
     externalize,
     getandupdate,
+    history,
     refresh,
     insertSTEP,
     relateddata,
