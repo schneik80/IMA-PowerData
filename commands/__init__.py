@@ -14,6 +14,7 @@ from .history import entry as history
 from .insertSTEP import entry as insertSTEP
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
+from .tabToolbar import entry as tabToolbar
 
 # Fusion will automatically call the start() and stop() functions.
 commands = [
@@ -29,6 +30,7 @@ commands = [
     refresh,
     insertSTEP,
     relateddata,
+    tabToolbar,
 ]
 
 
