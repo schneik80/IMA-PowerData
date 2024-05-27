@@ -85,18 +85,26 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Create the title for the output.
         parentOcc = design.parentDocument.name
+        parentOccTrimmed = parentOcc.rsplit(" ", 1)[0]  # trim version
 
         resultString = (
             'digraph "' + parentOcc + '" {' + "\n"
         )  # Change layout engine here
-        resultString += 'layout="dot";' + "\n"
-        resultString += "node[width=.75,height=.5,fontsize=9]" + "\n"
-        resultString += "nodesep=.2" + "\n"
-        resultString += "ranksep=3" + "\n"
-        resultString += "concentrate=false" + "\n"
-        resultString += 'mode="ipsep"' + "\n"
-        resultString += "diredgeconstraints=true" + "\n"
-        resultString += 'overlap="false"' + "\n"
+        resultString += 'layout="twopi";' + "\n"  # default is "dot"
+        resultString += (
+            "node[width=.75; height=.75; fontsize=9; fontname=helvetica;];" + "\n"
+        )
+        # resultString += "nodesep=.2" + "\n"
+        resultString += "ranksep = 2;" + "\n"
+        resultString += (
+            "concentrate=true;" + "\n"
+        )  # true will show only one edge, falls shows edge for each reference
+        resultString += 'mode="ipsep;"' + "\n"
+        resultString += "diredgeconstraints=true;" + "\n"
+        resultString += 'overlap="false;"' + "\n"
+        resultString += (
+            '"' + parentOccTrimmed + '" [style = filled; fillcolor = lightskyblue;];'
+        )
 
         # Call the recursive function to traverse the assembly and build the output string.
         resultString = traverseAssembly(
@@ -117,7 +125,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             with open(filepath, "w") as f:
                 f.write(resultString)
             ui.messageBox("Graph dot file saved at: " + filepath)
-            writestring = 'open -a /Applications/Graphviz.app' + ' "' + filepath + '"'
+            writestring = "open -a /Applications/Graphviz.app" + ' "' + filepath + '"'
             futil.log(writestring)
             os.system(writestring)
 

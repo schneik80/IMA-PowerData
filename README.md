@@ -61,3 +61,7 @@ Create an assembly referencing the active document. The Assembly document is cop
 The relate data tools are significantly improved over the stand-alone add-in.
 
 ---
+
+#### Assembly Tab
+
+Installs a new Assembly tab in the Fusion design toolbar. Restructures toolbar for better design workflows.  
