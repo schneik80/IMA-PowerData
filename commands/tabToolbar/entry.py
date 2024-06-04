@@ -1,5 +1,5 @@
 import adsk.core, adsk.fusion
-import os, traceback, pathlib, zipfile, sys
+import os, traceback, pathlib, zipfile, sys, json
 import urllib.request
 from sys import platform
 from ...lib import fusion360utils as futil
@@ -11,6 +11,7 @@ ui = app.userInterface
 CMD_ID = "PT-TabToolbar"
 CMD_NAME = "Install Assembly Tab"
 CMD_Description = "Add a new Assembly Tab to the Fusion Design toolbar. Reorders and modifies default toolbar for more efficient design workflows"
+
 
 # Local list of event handlers used to maintain a reference so
 # they are not released and garbage collected.
@@ -87,6 +88,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
         if ui:
             ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
+
 def close():
     ui.messageBox(
         "New Design toolbar with Assembly Tab is installed. Please save and close or close all open documents then restart Fusion",
@@ -99,13 +101,12 @@ def close():
 
 def macassytb():
     try:
-        code_path = pathlib.Path(os.path.dirname(sys.executable))
+        PATHS_DICT = json.loads(app.executeTextCommand("paths.get"))
+        code_path = pathlib.Path(PATHS_DICT.get("appDirectory"))
         print(f"MACOS {code_path}")
 
         tb_path = os.path.join(
-            code_path.parent.parent.parent.parent.parent,
-            "Libraries",
-            "Applications",
+            code_path,
             "Fusion",
             "Fusion",
             "UI",
@@ -116,9 +117,7 @@ def macassytb():
         )
 
         tb_zip = os.path.join(
-            code_path.parent.parent.parent.parent.parent,
-            "Libraries",
-            "Applications",
+            code_path,
             "Fusion",
             "Fusion",
             "UI",
@@ -147,10 +146,11 @@ def macassytb():
         if ui:
             ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
 
+
 def winassytb():
     try:
-        code_path = pathlib.Path(os.path.dirname(sys.executable))
-
+        PATHS_DICT = json.loads(app.executeTextCommand("paths.get"))
+        code_path = pathlib.Path(PATHS_DICT.get("appDirectory"))
         tb_path = os.path.join(
             code_path.parent,
             "Fusion",
@@ -191,6 +191,7 @@ def winassytb():
     except:
         if ui:
             ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
+
 
 # This event handler is called when the command terminates.
 def command_destroy(args: adsk.core.CommandEventArgs):
