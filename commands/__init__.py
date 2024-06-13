@@ -8,7 +8,6 @@ from .docinfo import entry as docinfo
 from .exportbomcsv import entry as exportbomcsv
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
-from .externalizeComps import entry as externalize
 from .getandupdate import entry as getandupdate
 from .history import entry as history
 from .insertSTEP import entry as insertSTEP
@@ -24,7 +23,6 @@ commands = [
     exportbomcsv,
     exportgraphviz,
     exportmermaid,
-    externalize,
     getandupdate,
     history,
     refresh,
