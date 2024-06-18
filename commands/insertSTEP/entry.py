@@ -103,7 +103,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
         fileDlg = ui.createFileDialog()
         fileDlg.isMultiSelectEnabled = False
         fileDlg.title = "Fusion Insert STEP"
-        fileDlg.filter = "*.stp, *.step"
+        fileDlg.filter = "STEP Files(*.stp;*.STP;*.step;*.STEP);;All files (*.*)"
 
         # Show file open dialog
         dlgResult = fileDlg.showOpen()
