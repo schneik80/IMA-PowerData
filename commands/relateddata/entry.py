@@ -3,8 +3,8 @@ import os, os.path
 import json
 from ...lib import fusion360utils as futil
 from ... import config
+
 app = adsk.core.Application.get()
-ui = app.userInterface
 ui = app.userInterface
 dropDownCommandInput = adsk.core.DropDownCommandInput.cast(None)
 boolvalueInput = adsk.core.BoolValueCommandInput.cast(None)
@@ -17,24 +17,27 @@ docTitle = ""
 docSeed = ""
 myDocsDict = ()
 
-# command identity information. 
-CMD_ID = f'{config.COMPANY_NAME}_{config.ADDIN_NAME}_cmdDialog'
-CMD_NAME = 'Create Related Data'
-CMD_Description = 'Create a new related document of the active document using a template'
+# command identity information.
+CMD_ID = f"{config.COMPANY_NAME}_{config.ADDIN_NAME}_cmdDialog"
+CMD_NAME = "Create Related Data"
+CMD_Description = (
+    "Create a new related document of the active document using a template"
+)
 
 # Specify that the command will be promoted to the panel.
 IS_PROMOTED = True
 
-# Define the location where the command button will be created. 
-WORKSPACE_ID = 'FusionSolidEnvironment'
+# Define the location where the command button will be created.
+WORKSPACE_ID = "FusionSolidEnvironment"
 PANEL_ID = "SolidCreatePanel"
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
-ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', '')
+ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
 
 # Local list of event handlers used to maintain a reference so
 # they are not released and garbage collected.
 local_handlers = []
+
 
 # Load project and folder from json
 def loadProject(__file__):
@@ -43,10 +46,10 @@ def loadProject(__file__):
     my_addin_path = os.path.dirname(os.path.realpath(__file__))
     my_projectfolder_json_path = os.path.join(my_addin_path, "data.json")
     my_docs_json_path = os.path.join(my_addin_path, "docs.json")
-    
-    #check if the documents json has been created
+
+    # check if the documents json has been created
     docsExist = os.path.isfile(my_docs_json_path)
-    futil.log(f'{CMD_NAME} Doc Json Exists: {docsExist}')
+    futil.log(f"{CMD_NAME} Doc Json Exists: {docsExist}")
 
     if docsExist == False:
 
@@ -83,28 +86,31 @@ def loadProject(__file__):
                 )
 
         myDocsDict = dict(sorted(myDocsDictUnsorted.items()))
-        futil.log(f'{CMD_NAME} Doc Data Created: {myDocsDict}')
+        futil.log(f"{CMD_NAME} Doc Data Created: {myDocsDict}")
         ...
 
         myDocsJson = json.dumps(myDocsDict)
         with open(my_docs_json_path, "w") as f:
             f.write(myDocsJson)
-            futil.log(f'{CMD_NAME} Doc Json Saved')
+            futil.log(f"{CMD_NAME} Doc Json Saved")
     else:
 
         with open(my_docs_json_path) as json_file:
             myDocsDict = json.load(json_file)
-            futil.log(f'{CMD_NAME} Doc Data Loaded: {myDocsDict}')
-
+            futil.log(f"{CMD_NAME} Doc Data Loaded: {myDocsDict}")
 
         return
-    
+
+
 data = loadProject(__file__)
+
 
 # Executed when add-in is run.
 def start():
     # Create a command Definition.
-    cmd_def = ui.commandDefinitions.addButtonDefinition(CMD_ID, CMD_NAME, CMD_Description, ICON_FOLDER)
+    cmd_def = ui.commandDefinitions.addButtonDefinition(
+        CMD_ID, CMD_NAME, CMD_Description, ICON_FOLDER
+    )
 
     # Define an event handler for the command created event. It will be called when the button is clicked.
     futil.add_handler(cmd_def.commandCreated, command_created)
@@ -119,7 +125,7 @@ def start():
     # Create the button command control in the UI at the end of the menu.
     control = panel.controls.addCommand(cmd_def)
 
-    # Specify if the command is promoted to the main toolbar. 
+    # Specify if the command is promoted to the main toolbar.
     control.isPromoted = IS_PROMOTED
 
 
@@ -144,13 +150,25 @@ def stop():
 # This defines the contents of the command dialog and connects to the command related events.
 def command_created(args: adsk.core.CommandCreatedEventArgs):
     # General logging for debug.
-    futil.log(f'{CMD_NAME} Command Created Event')
+    futil.log(f"{CMD_NAME} Command Created Event")
 
     # https://help.autodesk.com/view/fusion360/ENU/?contextId=CommandInputs
     inputs = args.command.commandInputs
-    global docSeed, doc_urn
+    global app, docSeed, doc_urn
 
-# Define the dialog for command
+    returnValue = 1
+    if app.activeDocument.isSaved == False:
+        returnValue = ui.messageBox(
+            "Related Documents can only be created from saved Documents.\nPlease save this document and try again",
+            "Document Not Saved",
+            0,
+            3,
+        )
+
+    if returnValue == 0:
+        return
+
+    # Define the dialog for command
     dropDownCommandInput = inputs.addDropDownCommandInput(
         "dropDownCommandInput",
         "Type",
@@ -167,29 +185,31 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
             docTitle = docSeed + " -  - " + (val.get("name"))
             doc_urn = val.get("urn")
 
-    boolCommandInput = inputs.addBoolValueInput(
-            "boolvalueInput_", "Auto-Name", True
-    )
+    boolCommandInput = inputs.addBoolValueInput("boolvalueInput_", "Auto-Name", True)
     boolCommandInput.value = True
 
-    stringDocName = inputs.addStringValueInput(
-        "stringValueInput_", "Name", docTitle
-    )
+    stringDocName = inputs.addStringValueInput("stringValueInput_", "Name", docTitle)
     stringDocName.isEnabled = False
 
-# Connect to the events
-    futil.add_handler(args.command.execute, command_execute, local_handlers=local_handlers)
-    futil.add_handler(args.command.inputChanged, command_input_changed, local_handlers=local_handlers)
-    futil.add_handler(args.command.destroy, command_destroy, local_handlers=local_handlers)
+    # Connect to the events
+    futil.add_handler(
+        args.command.execute, command_execute, local_handlers=local_handlers
+    )
+    futil.add_handler(
+        args.command.inputChanged, command_input_changed, local_handlers=local_handlers
+    )
+    futil.add_handler(
+        args.command.destroy, command_destroy, local_handlers=local_handlers
+    )
 
 
 # This event handler is called when the user clicks the OK button in the command dialog or
 # is immediately called after the created event not command inputs were created for the dialog.
 def command_execute(args: adsk.core.CommandEventArgs):
     # General logging for debug.
-    futil.log(f'{CMD_NAME} Command Execute Event')
+    futil.log(f"{CMD_NAME} Command Execute Event")
 
-# Get a reference to your command's inputs.
+    # Get a reference to your command's inputs.
     inputs = args.command.commandInputs
     global doc_urn, docSeed, docTitle
 
@@ -198,8 +218,8 @@ def command_execute(args: adsk.core.CommandEventArgs):
     docActive = app.activeDocument
     doc_with_ver = docActive.name
     docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
-    docTitleinput: adsk.core.StringValueCommandInput = (
-        inputs.itemById("stringValueInput_")
+    docTitleinput: adsk.core.StringValueCommandInput = inputs.itemById(
+        "stringValueInput_"
     )
     docTitle = docTitleinput.value
     docNew = app.documents.open(docActiveUrn)
@@ -213,9 +233,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
     seedDoc = adsk.fusion.Design.cast(
         docNew.products.itemByProductType("DesignProductType")
     )
-    seedDoc.rootComponent.occurrences.addByInsert(
-        docActive.dataFile, transform, True
-    )
+    seedDoc.rootComponent.occurrences.addByInsert(docActive.dataFile, transform, True)
 
     docNew.save(
         "Auto saved by related data add-in"
@@ -256,13 +274,15 @@ def command_input_changed(args: adsk.core.InputChangedEventArgs):
             stringDocname.isEnabled = True
 
     # General logging for debug.
-    futil.log(f'{CMD_NAME} Input Changed Event fired from a change to {changed_input.id}')
+    futil.log(
+        f"{CMD_NAME} Input Changed Event fired from a change to {changed_input.id}"
+    )
 
 
 # This event handler is called when the command terminates.
 def command_destroy(args: adsk.core.CommandEventArgs):
     # General logging for debug.
-    futil.log(f'{CMD_NAME} Command Destroy Event')
+    futil.log(f"{CMD_NAME} Command Destroy Event")
 
     global local_handlers
     local_handlers = []
