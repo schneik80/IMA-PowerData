@@ -4,13 +4,13 @@
 # You need to use aliases (import "entry" as "my_module") assuming you have the default module named "entry".
 from .assemblystats import entry as assemblystats
 from .autosave import entry as autosave
+from .datatoggle import entry as datatoggle
 from .dochistory import entry as dochistory
 from .docinfo import entry as docinfo
 from .exportbomcsv import entry as exportbomcsv
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
 from .getandupdate import entry as getandupdate
-
 from .insertSTEP import entry as insertSTEP
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
@@ -20,6 +20,7 @@ from .tabToolbar import entry as tabToolbar
 commands = [
     assemblystats,
     autosave,
+    datatoggle,
     dochistory,
     docinfo,
     exportbomcsv,
