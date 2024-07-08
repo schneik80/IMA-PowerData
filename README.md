@@ -16,9 +16,9 @@ Provide Cloud Data information on the active document. Reports on Hub, Project a
 
 **Recovery Save**
 
----
-
 This creates an entry in the file menu to manually save a local recovery save.
+
+---
 
 **Get and Update**
 
