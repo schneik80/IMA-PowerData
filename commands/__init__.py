@@ -12,6 +12,7 @@ from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
 from .getandupdate import entry as getandupdate
 from .insertSTEP import entry as insertSTEP
+from .refmanager import entry as refmanager
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
 from .tabToolbar import entry as tabToolbar
@@ -29,6 +30,7 @@ commands = [
     getandupdate,
     refresh,
     insertSTEP,
+    refmanager,
     relateddata,
     tabToolbar,
 ]
