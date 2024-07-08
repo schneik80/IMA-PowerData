@@ -28,6 +28,14 @@ Typical x-ref assemblies will use assembly contexts to create associativity acro
 
 When working in a team it can be necessary to reload the active assembly to load new versions created by other team members. Int he file menu the Refresh command will automatically close, get new versions and then reload the active document, saving you time and nuisance of doing this manually.
 
+**Reference Manager**
+
+Show all references in the active document and their status. Provides utilities to work with references.
+
+- Update all references or individually.
+- Allow the selection of versions per reference.
+- Open a reference in a new tab.
+
 ---
 
 **Export BOM**
