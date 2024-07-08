@@ -8,7 +8,7 @@ ui = app.userInterface
 
 CMD_NAME = "History"
 CMD_ID = "PT-history"
-CMD_Description = "Show History"
+CMD_Description = "Show History for the open document"
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
