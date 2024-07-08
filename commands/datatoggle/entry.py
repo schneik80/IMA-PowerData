@@ -36,8 +36,8 @@ local_handlers = []
 def start():
     # ******************************** Create Command Definition ********************************
     cmd_def = ui.commandDefinitions.itemById(_navBarBtnID)
-    if not navBarBtnCmdDef:
-        navBarBtnCmdDef = _ui.commandDefinitions.addButtonDefinition(
+    if not cmd_def:
+        cmd_def = ui.commandDefinitions.addButtonDefinition(
             _navBarBtnID, CMD_NAME, CMD_Description, ICON_FOLDER
         )
 
@@ -52,46 +52,26 @@ def start():
 
     # ****************
     # Get target workspace for the command.
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-
-    # Get target toolbar tab for the command and create the tab if necessary.
-    toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
-    if toolbar_tab is None:
-        toolbar_tab = workspace.toolbarTabs.add(TAB_ID, TAB_NAME)
-
-    # Get target panel for the command and and create the panel if necessary.
-    panel = toolbar_tab.toolbarPanels.itemById(PANEL_ID)
-    if panel is None:
-        panel = toolbar_tab.toolbarPanels.add(PANEL_ID, PANEL_NAME, PANEL_AFTER, False)
-
-    # Create the command control, i.e. a button in the UI.
-    control = panel.controls.addCommand(cmd_def)
 
 
 # Executed when add-in is stopped.
 def stop():
     # Get the various UI elements for this command
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-    panel = workspace.toolbarPanels.itemById(PANEL_ID)
-    toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
-    command_control = panel.controls.itemById(CMD_ID)
-    command_definition = ui.commandDefinitions.itemById(CMD_ID)
+    global app, ui, _handlers, _navBarBtnID, _navBarBtnName, _toolbar
+    _app = adsk.core.Application.get()
+    _ui = _app.userInterface
 
-    # Delete the button command control
-    if command_control:
-        command_control.deleteMe()
+    # Clean up the UI.
+    navToolbar = _ui.toolbars.itemById(_toolbar)
+    navToolbarControls = navToolbar.controls
 
-    # Delete the command definition
-    if command_definition:
-        command_definition.deleteMe()
+    cntrl = navToolbarControls.itemById(_navBarBtnID)
+    if cntrl:
+        cntrl.deleteMe()
 
-    # Delete the panel if it is empty
-    if panel.controls.count == 0:
-        panel.deleteMe()
-
-    # Delete the tab if it is empty
-    if toolbar_tab.toolbarPanels.count == 0:
-        toolbar_tab.deleteMe()
+    navBarBtnCmdDef = _ui.commandDefinitions.itemById(_navBarBtnID)
+    if not navBarBtnCmdDef:
+        navBarBtnCmdDef.deleteMe()
 
 
 # Function to be called when a user clicks the corresponding button in the UI.
@@ -101,30 +81,14 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     try:
         app = adsk.core.Application.get()
         ui = app.userInterface
-        product = app.activeProduct
-        design = adsk.fusion.Design.cast(product)
+        cmdDefs = ui.commandDefinitions
 
-        # Check a Design document is active.
-        if not design:
-            ui.messageBox("No active Fusion design", "No Design")
-            return
-
-        # Set styles of file dialog.
-        fileDlg = ui.createFileDialog()
-        fileDlg.isMultiSelectEnabled = False
-        fileDlg.title = "Fusion Insert STEP"
-        fileDlg.filter = "STEP Files(*.stp;*.STP;*.step;*.STEP);;All files (*.*)"
-
-        # Show file open dialog
-        dlgResult = fileDlg.showOpen()
-        if dlgResult == adsk.core.DialogResults.DialogOK:
-            filename = fileDlg.filename
+        if app.data.isDataPanelVisible == True:
+            datatoggleclose = cmdDefs.itemById("DashboardModeCloseCommand")
+            datatoggleclose.execute()
         else:
-            return
-
-        filename = '"' + filename + '"'
-        command = f"Fusion.ImportComponent {filename}"
-        app.executeTextCommand(command)
+            datatoggleopen = cmdDefs.itemById("DashboardModeOpenCommand")
+            datatoggleopen.execute()
 
     except:
         if ui:
