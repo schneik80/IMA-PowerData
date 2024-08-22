@@ -1,13 +1,8 @@
-import adsk.core, adsk.fusion
-import os, traceback
+import adsk.core, adsk.fusion, adsk.cam, adsk.drawing
+import os, traceback, json
 from ...lib import fusion360utils as futil
 from ... import config
-
-import json
 from datetime import datetime
-
-app = adsk.core.Application.get()
-ui = app.userInterface
 
 CMD_NAME = "New Documnet"
 CMD_ID = "PT-new"
@@ -28,6 +23,9 @@ ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resource
 
 # Holds references to event handlers
 local_handlers = []
+app = adsk.core.Application.cast(None)
+ui = adsk.core.UserInterface.cast(None)
+num = 0
 
 
 # Executed when add-in is run.
@@ -66,6 +64,7 @@ def stop():
     # Get the various UI elements for this command
     workspace = ui.workspaces.itemById(WORKSPACE_ID)
     panel = workspace.toolbarPanels.itemById(PANEL_ID)
+    #pallet = 
     toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
     command_control = panel.controls.itemById(CMD_ID)
     command_definition = ui.commandDefinitions.itemById(CMD_ID)
@@ -110,17 +109,19 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     palette = ui.palettes.add(
         "myPalette",
         "New_Document",
-        "resources\index.html",
-        False,
+        "index1.html",
         True,
         True,
-        300,
-        200,
+        True,
+        400,
+        800,
         True,
     )
     palette.isVisible = True
+    palette.dockingState = adsk.core.PaletteDockingStates.PaletteDockStateRight
 
-    # Create a browser input (cleanup for windows)
+
+# Create a browser input (cleanup for windows)
     browser_input_url = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "resources", "html", "index.html"
     )
