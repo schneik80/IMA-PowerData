@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="static/palette.js"></script>
+</head>
+<body>
+<div>
+    <h3>Message Received from sendInfoToHTML Method</h3>
+    <div style='margin-left: 30px;'>
+        <div><b>String Value:</b></div>
+        <div id='stringMessage' style='margin-left: 30px;'>Message from Command</div>
+
+        <div><b>Selection Info:</b></div>
+        <div id='selectionMessage' style='margin-left: 30px;'>Select<br>Something</div>
+
+    </div>
+    <hr>
+
+    <h3>Send Message to Command's HTMLEventHandler</h3>
+    <div style='margin-left: 30px;'>
+        <label for="formInput"><b>Data to send:</b></label>
+        <input type="text" id="formInput" value="Enter Some Text">
+        <br>
+        <br>
+        <div style='margin-left: 30px;'>
+            <button type='button' onclick='sendInfoToFusion()' style='background-color: #cccccc; padding: 5px'>
+                <b>Send HTML Event</b>
+            </button>
+        </div>
+        <br>
+        <div><b>HTML Event Handler Response</b></div>
+        <div id='returnValue' style='margin-left: 30px;'>Response</div>
+    </div>
+
+</div>
+</body>
+</html>

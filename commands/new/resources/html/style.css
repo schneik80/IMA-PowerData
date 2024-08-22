@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navtabs {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 10px 20px;
+  position: relative;
+}
+.navtab {
+  margin: 0 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
+}
+.navtab:hover {
+  color: #0696d7;
+}
+.navtab.active {
+  color: #0696d7;
+  font-weight: 600;
+}
+.underline {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: #0696d7;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+.content {
+  display: none;
+  padding: 20px 20px 20px;
+  max-width: 800px;
+  text-align: center;
+}
+.content.active {
+  display: block;
+}
+
+p { font-family: Helvetica, Arial, sans-serif;}
+caption { font-family: Helvetica, Arial, sans-serif;}
+th { font-family: Helvetica, Arial, sans-serif;}
+tbody { font-family: Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	color: #000;
+}
+
+.container {
+position: relative;
+display: flex;
+align-items: center;
+}
+
+.image {
+display: block;
+width: 128px;
+height: auto;
+}
+
+
+.container:hover {
+background-color: #c2c2c2;
+}
+
+.text {
+color: white;
+font-size: 20px;
+position: absolute;
+top: 50%;
+left: 50%;
+-webkit-transform: translate(-50%, -50%);
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+text-align: center;
+font-family: Helvetica, Arial, sans-serif;
+opacity: 1;
+}
+
+.tooltip {
+position: relative;
+display: inline-block;
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 70px;
+background-color: #484848;
+color: #fff;
+text-align: center;
+border-radius: 12px;
+padding: 5px 0;
+position: absolute;
+z-index: 1;
+bottom: 125%;
+left: 50%;
+margin-left: -35px;
+opacity: 0;
+transition: opacity 0.3s;
+font-size: 12px;
+}
+
+.tooltip:hover .tooltiptext {
+visibility: visible;
+opacity: 1;
+}
