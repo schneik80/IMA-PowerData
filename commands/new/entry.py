@@ -4,7 +4,7 @@ from ...lib import fusion360utils as futil
 from ... import config
 from datetime import datetime
 
-CMD_NAME = "New Documnet"
+CMD_NAME = "New Document"
 CMD_ID = "PT-new"
 CMD_Description = "Create new Document"
 IS_PROMOTED = False
@@ -18,15 +18,20 @@ PANEL_ID = config.my_panel_id
 PANEL_NAME = config.my_panel_name
 PANEL_AFTER = config.my_panel_after
 
+# Pallet 
+PALETTE_NAME = CMD_NAME
+PALETTE_ID = f'{config.COMPANY_NAME}_{config.ADDIN_NAME}_palette_id'
+PALETTE_URL = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources', 'index.html')
+PALETTE_URL = PALETTE_URL.replace('\\', '/') # The path function builds a valid OS path. This fixes it to be a valid local URL.
+PALETTE_DOCKING = adsk.core.PaletteDockingStates.PaletteDockStateRight # Set a default docking behavior for the palette
+
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
 
 # Holds references to event handlers
 local_handlers = []
-app = adsk.core.Application.cast(None)
-ui = adsk.core.UserInterface.cast(None)
-num = 0
-
+app = adsk.core.Application.get()
+ui = app.userInterface
 
 # Executed when add-in is run.
 def start():
@@ -40,34 +45,18 @@ def start():
 
     # ******************************** Create Command Control ********************************
     # Get target workspace for the command.
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-
-    # Get target toolbar tab for the command and create the tab if necessary.
-    toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
-    if toolbar_tab is None:
-        toolbar_tab = workspace.toolbarTabs.add(TAB_ID, TAB_NAME)
-
-    # Get target panel for the command and and create the panel if necessary.
-    panel = toolbar_tab.toolbarPanels.itemById(PANEL_ID)
-    if panel is None:
-        panel = toolbar_tab.toolbarPanels.add(PANEL_ID, PANEL_NAME, PANEL_AFTER, False)
+    qat = ui.toolbars.itemById("QAT")
 
     # Create the command control, i.e. a button in the UI.
-    control = panel.controls.addCommand(cmd_def)
-
-    # Now you can set various options on the control such as promoting it to always be shown.
-    control.isPromoted = IS_PROMOTED
-
+    control = qat.controls.addCommand(cmd_def, "FileSubMenuCommand", False)
 
 # Executed when add-in is stopped.
 def stop():
     # Get the various UI elements for this command
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
-    panel = workspace.toolbarPanels.itemById(PANEL_ID)
-    #pallet = 
-    toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
-    command_control = panel.controls.itemById(CMD_ID)
+    qat = ui.toolbars.itemById("QAT")
+    command_control = qat.controls.itemById(CMD_ID)
     command_definition = ui.commandDefinitions.itemById(CMD_ID)
+    palette = ui.palettes.itemById(PALETTE_ID)
 
     # Delete the button command control
     if command_control:
@@ -77,135 +66,111 @@ def stop():
     if command_definition:
         command_definition.deleteMe()
 
-    # Delete the panel if it is empty
-    if panel.controls.count == 0:
-        panel.deleteMe()
-
-    # Delete the tab if it is empty
-    if toolbar_tab.toolbarPanels.count == 0:
-        toolbar_tab.deleteMe()
+    # Delete the Palette
+    if palette:
+        palette.deleteMe()
 
 
-# Function to be called when a user clicks the corresponding button in the UI.
+# Event handler that is called when the user clicks the command button in the UI.
+# To have a dialog, you create the desired command inputs here. If you don't need
+# a dialog, don't create any inputs and the execute event will be immediately fired.
+# You also need to connect to any command related events here.
 def command_created(args: adsk.core.CommandCreatedEventArgs):
-    futil.log(f"{CMD_NAME} Command Created Event")
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Command created event.')
 
-    # Connect to the events that are needed by this command.
-    futil.add_handler(
-        args.command.execute, command_execute, local_handlers=local_handlers
-    )
-    futil.add_handler(
-        args.command.inputChanged, command_input_changed, local_handlers=local_handlers
-    )
-    futil.add_handler(
-        args.command.destroy, command_destroy, local_handlers=local_handlers
-    )
-    futil.add_handler(
-        args.command.incomingFromHTML, browser_incoming, local_handlers=local_handlers
-    )
-
-    inputs = args.command.commandInputs
-
-    palette = ui.palettes.add(
-        "myPalette",
-        "New_Document",
-        "index1.html",
-        True,
-        True,
-        True,
-        400,
-        800,
-        True,
-    )
-    palette.isVisible = True
-    palette.dockingState = adsk.core.PaletteDockingStates.PaletteDockStateRight
+    # Create the event handlers you will need for this instance of the command
+    futil.add_handler(args.command.execute, command_execute, local_handlers=local_handlers)
+    futil.add_handler(args.command.destroy, command_destroy, local_handlers=local_handlers)
 
 
-# Create a browser input (cleanup for windows)
-    browser_input_url = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "resources", "html", "index.html"
-    )
-    browser_input_url = browser_input_url.replace("\\", "/")
-
-    # Create a browser input
-    minimum_height = 300
-    browser_input = inputs.addBrowserCommandInput(
-        "browser_input", "Browser Input", browser_input_url, minimum_height
-    )
-    browser_input.isFullWidth = True
-
-
-# This function will be called when the user clicks the OK button in the command dialog.
+# Because no command inputs are being added in the command created event, the execute
+# event is immediately fired.
 def command_execute(args: adsk.core.CommandEventArgs):
-    futil.log(f"{CMD_NAME} Command Execute Event")
+    global palette
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Command execute event.')
+
+    palettes = ui.palettes
+    palette = palettes.itemById(PALETTE_ID)
+    if palette is None:
+        palette = palettes.add(
+            id=PALETTE_ID,
+            name=PALETTE_NAME,
+            htmlFileURL=PALETTE_URL,
+            isVisible=True,
+            showCloseButton=True,
+            isResizable=True,
+            width=450,
+            height=600,
+            useNewWebBrowser=True
+        )
+        futil.add_handler(palette.closed, palette_closed)
+        futil.add_handler(palette.navigatingURL, palette_navigating)
+        futil.add_handler(palette.incomingFromHTML, palette_incoming)
+        futil.log(f'{CMD_NAME}: Created a new palette: ID = {palette.id}, Name = {palette.name}')
+
+    if palette.dockingState == adsk.core.PaletteDockingStates.PaletteDockStateFloating:
+        palette.dockingState = PALETTE_DOCKING
+
+    palette.isVisible = True
 
 
-# This function will be called when the user changes anything in the command dialog.
-def command_input_changed(args: adsk.core.InputChangedEventArgs):
-    changed_input = args.input
-    inputs = args.inputs
-    futil.log(
-        f"{CMD_NAME} Input Changed Event fired from a change to {changed_input.id}"
-    )
+# Use this to handle a user closing your palette.
+def palette_closed(args: adsk.core.UserInterfaceGeneralEventArgs):
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Palette was closed.')
 
-    selection_input: adsk.core.SelectionCommandInput = inputs.itemById(
-        "selection_input"
-    )
-    browser_input: adsk.core.BrowserCommandInput = inputs.itemById("browser_input")
 
-    action = None
-    data = {}
-    if changed_input.id == "selection_input":
-        action = "updateSelection"
-        if selection_input.selectionCount > 0:
-            selected_entity = selection_input.selection(0).entity
-            data = {
-                "selection_name": selected_entity.name,
-                "selection_type": selected_entity.objectType,
-            }
-        else:
-            data = {
-                "selection_name": "Nothing Selected",
-                "selection_type": "Nothing Selected",
-            }
-    elif changed_input.id == "input_box":
-        action = "updateMessage"
-        data = {
-            "message": input_box.value,
-        }
+# Use this to handle a user navigating to a new page in your palette.
+def palette_navigating(args: adsk.core.NavigationEventArgs):
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Palette navigating event.')
 
-    if action is not None:
-        response = browser_input.sendInfoToHTML(action, json.dumps(data))
+    # Get the URL the user is navigating to:
+    url = args.navigationURL
+
+    log_msg = f"User is attempting to navigate to {url}\n"
+    futil.log(log_msg, adsk.core.LogLevels.InfoLogLevel)
+
+    # Check if url is an external site and open in user's default browser.
+    if url.startswith("http"):
+        args.launchExternally = True
 
 
 # Use this to handle events sent from javascript in your palette.
-def browser_incoming(html_args: adsk.core.HTMLEventArgs):
+def palette_incoming(html_args: adsk.core.HTMLEventArgs):
+    global palette
 
-    # Read message sent from browser input javascript function
-    message_data = json.loads(html_args.data)
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Palette incoming event.')
+
+    message_data: dict = json.loads(html_args.data)
     message_action = html_args.action
 
-    # Get Command Inputs
-    browser_input = html_args.browserCommandInput
-    inputs = browser_input.commandInputs
-    incoming_box: adsk.core.TextBoxCommandInput = inputs.itemById("incoming_box")
 
-    # Update Command UI from form value from HTML/Javascript
-    if message_action == "formMessage":
-        formInputValue = message_data.get("formInputValue", "textBoxValue not sent")
-        timeStamp = message_data.get("timeStamp", "timeStamp not sent")
+    log_msg = f"Event received from {html_args.firingEvent.sender.name}\n"
+    log_msg += f"Action: {message_action}\n"
+    log_msg += f"Data: {message_data}"
+    futil.log(log_msg, adsk.core.LogLevels.InfoLogLevel)
 
-        msg = f"<b>Form Input Value</b>: {formInputValue}<br/><b>Time Stamp</b>: {timeStamp}"
-        incoming_box.formattedText = msg
+    docActive = app.data.activeFolder
+    doccopyurn = message_data['link']
+    docActiveUrn = app.data.findFileById(doccopyurn)
+    docTitle = "New"
+    docNew = app.documents.open(docActiveUrn)
+    docNew.saveAs(
+        docTitle,
+        docActive,
+        "Auto created by new add-in",
+    "",
+    )
+    palette.isVisible = False
 
-    # Javascript is expecting a response
-    now = datetime.now()
-    currentTime = now.strftime("%H:%M:%S")
-    html_args.returnData = f"OK - {currentTime}"
-
-
-# This function will be called when the user completes the command.
+# This event handler is called when the command terminates.
 def command_destroy(args: adsk.core.CommandEventArgs):
+    # General logging for debug.
+    futil.log(f'{CMD_NAME}: Command destroy event.')
+
     global local_handlers
     local_handlers = []
-    futil.log(f"{CMD_NAME} Command Destroy Event")

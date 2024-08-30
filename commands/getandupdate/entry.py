@@ -37,7 +37,6 @@ def start():
 
     control = qat.controls.addCommand(cmd_def, "save", True)
 
-
 # Executed when add-in is stopped.
 def stop():
     # Get the various UI elements for this command
