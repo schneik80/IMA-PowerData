@@ -154,10 +154,10 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
     log_msg += f"Data: {message_data}"
     futil.log(log_msg, adsk.core.LogLevels.InfoLogLevel)
 
+    docTitle = create_unique_Filename()
     docActive = app.data.activeFolder
     doccopyurn = message_data['link']
     docActiveUrn = app.data.findFileById(doccopyurn)
-    docTitle = "New"
     docNew = app.documents.open(docActiveUrn)
     docNew.saveAs(
         docTitle,
@@ -174,3 +174,10 @@ def command_destroy(args: adsk.core.CommandEventArgs):
 
     global local_handlers
     local_handlers = []
+
+def create_unique_Filename(prefix="new"):
+    # get current timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"{prefix}_{timestamp}"
+
+    return filename
