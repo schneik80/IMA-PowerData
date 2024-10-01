@@ -12,6 +12,15 @@ Provide assembly information on the active document. Reports on components, refe
 
 Provide Cloud Data information on the active document. Reports on Hub, Project and Folder location including Fusion Manufacturing Cloud Data mode unique identifiers.
 
+**Document History**
+
+Show the history of the active document.
+
+
+New Document
+
+Adds a QAT (Quick Access Toobar) command to open a pallet to create new documents. Documents are autonamed and saved to the active project folder in Team.
+
 ---
 
 **Recovery Save**
