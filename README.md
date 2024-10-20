@@ -16,10 +16,9 @@ Provide Cloud Data information on the active document. Reports on Hub, Project a
 
 Show the history of the active document.
 
-
 New Document
 
-Adds a QAT (Quick Access Toobar) command to open a pallet to create new documents. Documents are autonamed and saved to the active project folder in Team.
+Adds a QAT (Quick Access Toolbar) command to open a pallet to create new documents. Documents are auto-named and saved to the active project folder in Team.
 
 ---
 
@@ -75,6 +74,14 @@ The relate data tools are significantly improved over the stand-alone add-in.
 
 ---
 
+**Default Folders**
+
+Creates three folders in the active project if they do not already exist. Folders are:
+
+- Obit - Folder to store documents not to be used. These may include obit lifecycle documents or documents that can not be deleted due to historical references.
+- Archive - Folder for documents that are not active but should not be deleted.
+- Quarantine - Folder for imported documents that need to be cleaned up prior to general use.
+  
 **Toggle Data Pane**
 
 Toggling the data pane is buried three level menu or a keyboard shortcut. This adds a button to the navbar to make toggling easier.

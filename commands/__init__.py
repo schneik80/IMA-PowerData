@@ -5,6 +5,7 @@
 from .assemblystats import entry as assemblystats
 from .autosave import entry as autosave
 from .datatoggle import entry as datatoggle
+from .defaultfolders import entry as defaultfolders
 from .dochistory import entry as dochistory
 from .docinfo import entry as docinfo
 from .exportbomcsv import entry as exportbomcsv
@@ -23,6 +24,7 @@ commands = [
     assemblystats,
     autosave,
     datatoggle,
+    defaultfolders,
     dochistory,
     docinfo,
     exportbomcsv,
