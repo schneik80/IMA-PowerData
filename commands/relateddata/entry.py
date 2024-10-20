@@ -15,7 +15,7 @@ my_hub = app.data.activeHub
 docSeed = ""
 docTitle = ""
 docSeed = ""
-myDocsDict = ()
+my_DocsDictSorted = ()
 
 # command identity information.
 CMD_ID = f"{config.COMPANY_NAME}_{config.ADDIN_NAME}_cmdDialog"
@@ -41,7 +41,7 @@ local_handlers = []
 
 # Load project and folder from json
 def loadProject(__file__):
-    global app, data, myDocsDict
+    global app, data, my_DocsDictSorted
 
     my_addin_path = os.path.dirname(os.path.realpath(__file__))
     my_projectfolder_json_path = os.path.join(my_addin_path, "data.json")
@@ -72,32 +72,32 @@ def loadProject(__file__):
             )
             return data
 
-        myDocsDictUnsorted = {}
+        my_DocsDictUnsorted = {}
         for data_file in my_folder.dataFiles:
             if data_file.fileExtension == "f3d":
-                dname = data_file.name + "dict"
-                myDocsDictUnsorted.update(
+                name_Dict = data_file.name + "dict"
+                my_DocsDictUnsorted.update(
                     {
-                        dname: {
+                        name_Dict: {
                             "name": data_file.name,
                             "urn": data_file.id,
                         }
                     }
                 )
 
-        myDocsDict = dict(sorted(myDocsDictUnsorted.items()))
-        futil.log(f"{CMD_NAME} Doc Data Created: {myDocsDict}")
+        my_DocsDictSorted = dict(sorted(my_DocsDictUnsorted.items()))
+        futil.log(f"{CMD_NAME} Doc Data Created: {my_DocsDictSorted}")
         ...
 
-        myDocsJson = json.dumps(myDocsDict)
+        my_DocsJson = json.dumps(my_DocsDictSorted)
         with open(my_docs_json_path, "w") as f:
-            f.write(myDocsJson)
+            f.write(my_DocsJson)
             futil.log(f"{CMD_NAME} Doc Json Saved")
     else:
 
         with open(my_docs_json_path) as json_file:
-            myDocsDict = json.load(json_file)
-            futil.log(f"{CMD_NAME} Doc Data Loaded: {myDocsDict}")
+            my_DocsDictSorted = json.load(json_file)
+            futil.log(f"{CMD_NAME} Doc Data Loaded: {my_DocsDictSorted}")
 
         return
 
@@ -154,7 +154,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
 
     # https://help.autodesk.com/view/fusion360/ENU/?contextId=CommandInputs
     inputs = args.command.commandInputs
-    global app, docSeed, doc_urn
+    global app, docSeed, docURN
 
     returnValue = 1
     if app.activeDocument.isSaved == False:
@@ -176,14 +176,14 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     )
 
     dropDownItems_ = dropDownCommandInput.listItems
-    for key, val in myDocsDict.items():
+    for key, val in my_DocsDictSorted.items():
         if isinstance(val, dict):
             dropDownItems_.add(val.get("name"), True),
             docActive = app.activeDocument
-            doc_with_ver = docActive.name
-            docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
-            docTitle = docSeed + " -  - " + (val.get("name"))
-            doc_urn = val.get("urn")
+            docWithVersion = docActive.name
+            docSeed = docWithVersion.rsplit(" ", 1)[0]  # trim version
+            docTitle = docSeed + " <-- " + (val.get("name"))
+            docURN = val.get("urn")
 
     boolCommandInput = inputs.addBoolValueInput("boolvalueInput_", "Auto-Name", True)
     boolCommandInput.value = True
@@ -211,13 +211,13 @@ def command_execute(args: adsk.core.CommandEventArgs):
 
     # Get a reference to your command's inputs.
     inputs = args.command.commandInputs
-    global doc_urn, docSeed, docTitle
+    global docURN, docSeed, docTitle
 
-    docActiveUrn = app.data.findFileById(doc_urn)
+    docActiveUrn = app.data.findFileById(docURN)
 
     docActive = app.activeDocument
-    doc_with_ver = docActive.name
-    docSeed = doc_with_ver.rsplit(" ", 1)[0]  # trim version
+    docWithVersion = docActive.name
+    docSeed = docWithVersion.rsplit(" ", 1)[0]  # trim version
     docTitleinput: adsk.core.StringValueCommandInput = inputs.itemById(
         "stringValueInput_"
     )
@@ -246,7 +246,7 @@ def command_input_changed(args: adsk.core.InputChangedEventArgs):
     changed_input = args.input
     inputs = args.inputs
 
-    global doc_urn, docTitle, docSeed
+    global docURN, docTitle, docSeed
     stringDocname = args.inputs.itemById("stringValueInput_")
 
     # handle the combobox change event
@@ -255,14 +255,14 @@ def command_input_changed(args: adsk.core.InputChangedEventArgs):
 
         # find the right dictionary based on the combo box value
         listOfKeys = ""
-        for i in myDocsDict.keys():
-            for j in myDocsDict[i].values():
+        for i in my_DocsDictSorted.keys():
+            for j in my_DocsDictSorted[i].values():
                 if searchDict in j:
                     if i not in listOfKeys:
                         listOfKeys = i
 
-        doc_urn = (myDocsDict).get(listOfKeys).get("urn")  # set the urn
-        doctempname = (myDocsDict).get(listOfKeys).get("name")
+        docURN = (my_DocsDictSorted).get(listOfKeys).get("urn")  # set the urn
+        doctempname = (my_DocsDictSorted).get(listOfKeys).get("name")
         docTitle = docSeed + " -  - " + doctempname
         stringDocname.value = docTitle
 
