@@ -15,6 +15,7 @@ from .getandupdate import entry as getandupdate
 from .insertSTEP import entry as insertSTEP
 from .new import entry as new
 from .refmanager import entry as refmanager
+from .refrences import entry as refrences
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
 from .tabToolbar import entry as tabToolbar
@@ -35,6 +36,7 @@ commands = [
     insertSTEP,
     new,
     refmanager,
+    refrences,
     relateddata,
     tabToolbar,
 ]

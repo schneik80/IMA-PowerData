@@ -1,4 +1,4 @@
-# Data Power Tools for Fusion v0.3
+# Data Power Tools for Fusion v0.5
 
 Make working as a team, cloud data, and with assemblies more productive.
 
@@ -71,6 +71,15 @@ Browse the local device and insert a STEP file into the active document.
 Create an assembly referencing the active document. The Assembly document is copied from a cloud project/folder allowing for created assemblies to be used for different disciplines and to have already saved information to automate workflows.
 
 The relate data tools are significantly improved over the stand-alone add-in.
+
+**Document References**
+
+Displays the active documents relationships. Four types of relationships are supported:
+
+- Parents - Other documents that references the active document. These would be incoming relationships.
+- Children - Documents the active Document references. These would be outgoing relationships
+- Drawings - Drawings of the active Document.
+- Related Data - Documents created with the IMA Power Tools related data command. These are separated from other standard Fusion relationships.
 
 ---
 
