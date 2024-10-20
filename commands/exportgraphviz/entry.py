@@ -88,20 +88,21 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         parentOccTrimmed = parentOcc.rsplit(" ", 1)[0]  # trim version
 
         resultString = (
-            'digraph "' + parentOcc + '" {' + "\n"
+            'digraph "' + parentOcc + '" {' + '\n'
         )  # Change layout engine here
-        resultString += 'layout="twopi";' + "\n"  # default is "dot"
+        resultString += 'layout="twopi";' + '\n'  # default is "dot"
         resultString += (
-            "node[width=.75; height=.75; fontsize=9; fontname=helvetica;];" + "\n"
+            'node[width=.75; height=.5; fontsize=8; fontname=helvetica; shape=box; style=rounded;];' + '\n'
         )
         # resultString += "nodesep=.2" + "\n"
-        resultString += "ranksep = 2;" + "\n"
+        resultString += 'ranksep = 2;' + '\n'
         resultString += (
-            "concentrate=true;" + "\n"
+            'concentrate=true;' + '\n'
         )  # true will show only one edge, falls shows edge for each reference
-        resultString += 'mode="ipsep;"' + "\n"
-        resultString += "diredgeconstraints=true;" + "\n"
-        resultString += 'overlap="false;"' + "\n"
+        # resultString += 'mode="ipsep;"' + '\n' # neato only
+        # resultString += 'diredgeconstraints=true;' + '\n' # neato only
+        resultString += 'overlap="false;"' + '\n'
+        resultString += 'splines=curved;' + '\n'
         resultString += (
             '"' + parentOccTrimmed + '" [style = filled; fillcolor = lightskyblue;];'
         )
