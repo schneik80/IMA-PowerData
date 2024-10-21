@@ -142,6 +142,7 @@ def palette_navigating(args: adsk.core.NavigationEventArgs):
 def palette_incoming(html_args: adsk.core.HTMLEventArgs):
     global palette
 
+
     # General logging for debug.
     futil.log(f'{CMD_NAME}: Palette incoming event.')
 
@@ -154,6 +155,9 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
     log_msg += f"Data: {message_data}"
     futil.log(log_msg, adsk.core.LogLevels.InfoLogLevel)
 
+    palette.isVisible = False
+
+
     docTitle = create_unique_Filename()
     docActive = app.data.activeFolder
     doccopyurn = message_data['link']
@@ -165,7 +169,6 @@ def palette_incoming(html_args: adsk.core.HTMLEventArgs):
         "Auto created by new add-in",
     "",
     )
-    palette.isVisible = False
 
 # This event handler is called when the command terminates.
 def command_destroy(args: adsk.core.CommandEventArgs):
