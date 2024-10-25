@@ -100,7 +100,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
             id=PALETTE_ID,
             name=PALETTE_NAME,
             htmlFileURL=PALETTE_URL,
-            isVisible=True,
+            isVisible=False,
             showCloseButton=True,
             isResizable=True,
             width=450,
@@ -112,7 +112,11 @@ def command_execute(args: adsk.core.CommandEventArgs):
         futil.add_handler(palette.incomingFromHTML, palette_incoming)
         futil.log(f'{CMD_NAME}: Created a new palette: ID = {palette.id}, Name = {palette.name}')
 
-    #hub check
+
+    if palette.dockingState == adsk.core.PaletteDockingStates.PaletteDockStateFloating:
+        palette.dockingState = PALETTE_DOCKING
+
+        #hub check
     hub = app.data.activeHub
     if hub.id != config.COMPANY_HUB:
         futil.log(f'active hub is {hub.id}.\n{config.COMPANY_HUB} was expected')
@@ -123,14 +127,8 @@ def command_execute(args: adsk.core.CommandEventArgs):
             3,
         )
         palette.isVisible = False
-        return
-        
-
-
-    if palette.dockingState == adsk.core.PaletteDockingStates.PaletteDockStateFloating:
-        palette.dockingState = PALETTE_DOCKING
-
-    palette.isVisible = True
+    else:
+        palette.isVisible = True
 
 
 # Use this to handle a user closing your palette.
