@@ -156,6 +156,18 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
     inputs = args.command.commandInputs
     global app, docSeed, docURN
 
+    #hub check
+    hub = app.data.activeHub
+    if hub.id != config.COMPANY_HUB:
+        futil.log(f'active hub is {hub.id}.\n{config.COMPANY_HUB} was expected')
+        ui.messageBox(
+            "The active hub is not configured for this command.\nPlease switch to the correct hub and try again.",
+            "Incorrect Hub",
+            0,
+            3,
+        )
+        return
+
     returnValue = 1
     if app.activeDocument.isSaved == False:
         returnValue = ui.messageBox(

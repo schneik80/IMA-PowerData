@@ -28,6 +28,8 @@ PALETTE_DOCKING = adsk.core.PaletteDockingStates.PaletteDockStateRight # Set a d
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
 
+
+
 # Holds references to event handlers
 local_handlers = []
 app = adsk.core.Application.get()
@@ -48,7 +50,7 @@ def start():
     qat = ui.toolbars.itemById("QAT")
 
     # Create the command control, i.e. a button in the UI.
-    control = qat.controls.addCommand(cmd_def, "FileSubMenuCommand", False)
+    control = qat.controls.addCommand(cmd_def, "FileSubMenuCommand", False)   
 
 # Executed when add-in is stopped.
 def stop():
@@ -92,6 +94,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
     futil.log(f'{CMD_NAME}: Command execute event.')
 
     palettes = ui.palettes
+    
     palette = palettes.itemById(PALETTE_ID)
     if palette is None:
         palette = palettes.add(
@@ -109,6 +112,20 @@ def command_execute(args: adsk.core.CommandEventArgs):
         futil.add_handler(palette.navigatingURL, palette_navigating)
         futil.add_handler(palette.incomingFromHTML, palette_incoming)
         futil.log(f'{CMD_NAME}: Created a new palette: ID = {palette.id}, Name = {palette.name}')
+
+    #hub check
+    hub = app.data.activeHub
+    if hub.id != config.COMPANY_HUB:
+        futil.log(f'active hub is {hub.id}.\n{config.COMPANY_HUB} was expected')
+        ui.messageBox(
+            "The active hub is not configured for this command.\nPlease switch to the correct hub and try again.",
+            "Incorrect Hub",
+            0,
+            3,
+        )
+        return
+        
+
 
     if palette.dockingState == adsk.core.PaletteDockingStates.PaletteDockStateFloating:
         palette.dockingState = PALETTE_DOCKING
