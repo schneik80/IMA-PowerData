@@ -28,8 +28,6 @@ PALETTE_DOCKING = adsk.core.PaletteDockingStates.PaletteDockStateRight # Set a d
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
 
-
-
 # Holds references to event handlers
 local_handlers = []
 app = adsk.core.Application.get()
@@ -80,6 +78,7 @@ def stop():
 def command_created(args: adsk.core.CommandCreatedEventArgs):
     # General logging for debug.
     futil.log(f'{CMD_NAME}: Command created event.')
+    futil.log(f"Hub Configured: {config.COMPANY_HUB}")
 
     # Create the event handlers you will need for this instance of the command
     futil.add_handler(args.command.execute, command_execute, local_handlers=local_handlers)
@@ -123,6 +122,7 @@ def command_execute(args: adsk.core.CommandEventArgs):
             0,
             3,
         )
+        palette.isVisible = False
         return
         
 

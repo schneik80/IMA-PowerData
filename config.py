@@ -2,7 +2,10 @@
 # This module serves as a way to share variables across different
 # modules (global variables).
 
-import os
+import adsk.core
+import os, os.path
+import json
+from .lib import fusion360utils as futil
 
 # Flag that indicates to run in Debug mode or not. When running in Debug mode
 # more information is written to the Text Command window. Generally, it's useful
@@ -16,7 +19,34 @@ DEBUG = True
 # part of the ID to better ensure the ID is unique.
 ADDIN_NAME = os.path.basename(os.path.dirname(__file__))
 COMPANY_NAME = "IMA LLC"
-COMPANY_HUB = "a.YnVzaW5lc3M6aW1hbGxj"
+COMPANY_HUB =""
+
+#COMPANY_HUB = "a.YnVzaW5lc3M6aW1hbGxj"
+
+def loadHub(__file__):
+
+    app = adsk.core.Application.get()
+    ui = app.userInterface
+    my_addin_path = os.path.dirname(os.path.realpath(__file__))
+    my_hub_path = os.path.join(my_addin_path, "hub.json")
+
+    docsExist = os.path.isfile(my_hub_path)
+
+    if docsExist == False:
+        global COMPANY_HUB
+
+        ui.messageBox(
+            "Hub Configuration file is missing.\nPlease read the documentation and configure your hub",
+            "No Hub Configured",
+            0,
+            3,
+        )
+    else:
+        with open(my_hub_path) as json_file:
+            my_hub = json.load(json_file)
+            COMPANY_HUB = my_hub.get('HUB_ID')
+data = loadHub(__file__)
+
 
 # Palettes
 sample_palette_id = f"{COMPANY_NAME}_{ADDIN_NAME}_palette_id"

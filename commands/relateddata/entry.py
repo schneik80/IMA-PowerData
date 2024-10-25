@@ -114,6 +114,7 @@ def start():
 
     # Define an event handler for the command created event. It will be called when the button is clicked.
     futil.add_handler(cmd_def.commandCreated, command_created)
+    
 
     # ******** Add a button into the UI so the user can run the command. ********
     # Get the target workspace the button will be created in.
@@ -151,6 +152,7 @@ def stop():
 def command_created(args: adsk.core.CommandCreatedEventArgs):
     # General logging for debug.
     futil.log(f"{CMD_NAME} Command Created Event")
+    futil.log(f"Hub Configured: {config.COMPANY_HUB}")
 
     # https://help.autodesk.com/view/fusion360/ENU/?contextId=CommandInputs
     inputs = args.command.commandInputs
