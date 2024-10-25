@@ -148,8 +148,13 @@ dmypy.json
 .AppleDB
 .AppleDesktop
 Network Trash Folder
-Temporary Items
+
+#Temporary Items
 .apdisk
+
+#user specific data files
 docs.json
-data.jsonhub.json
+data.json
 hub.json
+commands/relateddata/docs.json
+commands/relateddata/data.json
