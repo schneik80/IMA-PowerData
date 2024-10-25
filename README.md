@@ -2,6 +2,10 @@
 
 Make working as a team, cloud data, and with assemblies more productive.
 
+## Configuration
+
+There are several json files that need to be configured. Documentation on how to configure is TODO.
+
 ## Available Tools:
 
 **Assembly Statistics**
