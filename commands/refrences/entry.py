@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "Document Refrences"
+CMD_NAME = "Document References"
 CMD_ID = "PT-docrefs"
 CMD_Description = "List Active Document References"
 
