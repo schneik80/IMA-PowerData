@@ -100,12 +100,7 @@ Export the active document's component relationships as a mermaid flowchart md f
 
 **[Make Project Default Folders](./docs/Default%20Folders.md)**
 
-Creates three folders in the active project if they do not already exist. Folders are:
-
-- Obit - Folder to store documents not to be used. These may include obit lifecycle documents or documents that can not be deleted due to historical references.
-- Archive - Folder for documents that are not active but should not be deleted.
-- Quarantine - Folder for imported documents that need to be cleaned up prior to general use.
-  
+Creates default folders in the active project if they do not already exist.
 
 **[Install a dedicated Assembly Tab](.docs/Install%20Assembly%20Tab.md)**
 
