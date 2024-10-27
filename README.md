@@ -22,12 +22,7 @@ Adds a QAT (Quick Access Toolbar) command to open a pallet to create new documen
 
 **[Document References](./docs/Document%20References.md)**
 
-Displays the active documents relationships. Four types of relationships are supported:
-
-- Parents - Other documents that references the active document. These would be incoming relationships.
-- Children - Documents the active Document references. These would be outgoing relationships
-- Drawings - Drawings of the active Document.
-- Related Data - Documents created with the IMA Power Tools related data command. These are separated from other standard Fusion relationships.
+Display a dialog with detailed information on the active documents references. Useful to use standalone and more so with the [Related Data](/docs/Related%20Data.md) tool.
 
 **[Reference Manager](./docs/Reference%20Manager.md)**
 
@@ -69,7 +64,6 @@ Show the history of the active document.
 
 Toggling the data pane is buried three level menu or a keyboard shortcut. This adds a button to the navbar to make toggling easier.
 
-
 **[Recovery Save](./docs/Recovery%20Save.md)**
 
 This creates an entry in the file menu to manually save a local recovery save.
@@ -78,7 +72,7 @@ This creates an entry in the file menu to manually save a local recovery save.
 
 Browse the local device and insert a STEP file into the active document.
 
-----
+---
 
 ## Export Document information
 

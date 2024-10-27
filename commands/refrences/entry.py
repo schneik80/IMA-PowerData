@@ -8,7 +8,7 @@ ui = app.userInterface
 
 CMD_NAME = "Document Refrences"
 CMD_ID = "PT-docrefs"
-CMD_Description = "List Active Document Refrences"
+CMD_Description = "List Active Document References"
 
 
 # Local list of event handlers used to maintain a reference so
