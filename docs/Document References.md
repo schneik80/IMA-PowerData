@@ -24,7 +24,7 @@ If no relationships exist, it will also be noted.
 
 ## Access
 
-Access the **Document References** dialog in the **File** dropdown menu.
+Access to the **Document References** command is from the Design Document's **Utilities** tab, In the **Tools** panel.
 
 ![access](/docs/assets/docrefs_002.png)
 

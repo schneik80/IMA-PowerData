@@ -16,10 +16,9 @@
 
 ![assembly stats](/docs/assets/assemblystats_001.png)
 
-
 ## Access
 
-The **Assembly Statistics** command is access from the Design Document's **Utilities** tab, In the **Tools** panel.
+Access to the **Assembly Statistics** command is from the Design Document's **Utilities** tab, In the **Tools** panel.
 
 ![access](/docs/assets/assemblystats_002.png)
 
