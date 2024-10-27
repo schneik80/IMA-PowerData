@@ -33,19 +33,13 @@ def start():
 
     qat = ui.toolbars.itemById("QAT")
 
-    # Get the drop-down that contains the file related commands.
-    fileDropDown = qat.controls.itemById("FileSubMenuCommand")
-
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "UploadCommand", True)
-
+    control = qat.controls.addCommand(cmd_def, "save", True)
 
 # Executed when add-in is stopped.
 def stop():
     # Get the various UI elements for this command
     qat = ui.toolbars.itemById("QAT")
-    fileDropDown = qat.controls.itemById("FileSubMenuCommand")
-    command_control = fileDropDown.controls.itemById(CMD_ID)
+    command_control = qat.controls.itemById(CMD_ID)
     command_definition = ui.commandDefinitions.itemById(CMD_ID)
 
     # Delete the button command control

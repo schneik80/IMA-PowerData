@@ -23,7 +23,8 @@ PANEL_AFTER = config.my_panel_after
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
 
-# Holds references to event handlers
+# Local list of event handlers used to maintain a reference so
+# they are not released and garbage collected.
 local_handlers = []
 
 
@@ -52,7 +53,7 @@ def start():
         panel = toolbar_tab.toolbarPanels.add(PANEL_ID, PANEL_NAME, PANEL_AFTER, False)
 
     # Create the command control, i.e. a button in the UI.
-    control = panel.controls.addCommand(cmd_def)
+    control = panel.controls.addCommand(cmd_def,"PT-assemblystats", True)
 
     # Now you can set various options on the control such as promoting it to always be shown.
     control.isPromoted = IS_PROMOTED

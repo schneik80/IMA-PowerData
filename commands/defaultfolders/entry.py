@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "Default Project Folders"
+CMD_NAME = "Add Default Project Folders"
 CMD_ID = "PT-defaultfolders"
 CMD_Description = "Create default project folders if they do not exist"
 
@@ -34,8 +34,8 @@ def start():
     # Get the drop-down that contains the file related commands.
     fileDropDown = qat.controls.itemById("FileSubMenuCommand")
 
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "NewDocumentCommand", False)
+    # Add a new button to the end of the file menu.
+    control = fileDropDown.controls.addCommand(cmd_def)
 
 
 # Executed when add-in is stopped.

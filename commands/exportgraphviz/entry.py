@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "Graphiz Export"
+CMD_NAME = "Export Graphiz Diagram..."
 CMD_ID = "PT-Exportgraphviz"
 CMD_Description = "Export Active Document as Graphviz dot diagram"
 
@@ -33,8 +33,8 @@ def start():
     # Get the drop-down that contains the file related commands.
     fileDropDown = qat.controls.itemById("FileSubMenuCommand")
 
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "UploadCommand", True)
+    # Add a new button after the Export control.
+    control = fileDropDown.controls.addCommand(cmd_def, "ExportCommand", True)
 
 
 # Executed when add-in is stopped.

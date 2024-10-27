@@ -12,9 +12,6 @@ CMD_Description = (
     "Close and reopen the active document to get new versions from Team Hub"
 )
 
-# Resource location for command icons, here we assume a sub folder in this directory named "resources".
-ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
-
 # Local list of event handlers used to maintain a reference so
 # they are not released and garbage collected.
 local_handlers = []
@@ -24,7 +21,7 @@ local_handlers = []
 def start():
     # Create a command Definition.
     cmd_def = ui.commandDefinitions.addButtonDefinition(
-        CMD_ID, CMD_NAME, CMD_Description, ICON_FOLDER
+        CMD_ID, CMD_NAME, CMD_Description
     )
 
     # Define an event handler for the command created event. It will be called when the button is clicked.
@@ -38,8 +35,8 @@ def start():
     # Get the drop-down that contains the file related commands.
     fileDropDown = qat.controls.itemById("FileSubMenuCommand")
 
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "UploadCommand", True)
+    # Add a new button after the Export control.
+    control = fileDropDown.controls.addCommand(cmd_def, "ExportCommand", False)
 
 
 # Executed when add-in is stopped.

@@ -7,7 +7,7 @@ app = adsk.core.Application.get()
 ui = app.userInterface
 
 CMD_ID = "PT-exportmermaid"
-CMD_NAME = "Mermaid Export"
+CMD_NAME = "Export Mermaid Diagram..."
 CMD_Description = "Export Active Document as Mermaid mmd diagram"
 IS_PROMOTED = False
 
@@ -34,8 +34,8 @@ def start():
     # Get the drop-down that contains the file related commands.
     fileDropDown = qat.controls.itemById("FileSubMenuCommand")
 
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "UploadCommand", True)
+    # Add a new button after the Export control.
+    control = fileDropDown.controls.addCommand(cmd_def, "ExportCommand", True)
 
 
 # Executed when add-in is stopped.

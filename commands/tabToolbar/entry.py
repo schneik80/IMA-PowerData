@@ -36,8 +36,8 @@ def start():
     # Get the drop-down that contains the file related commands.
     fileDropDown = qat.controls.itemById("FileSubMenuCommand")
 
-    # Add a new button before the 3D Print control.
-    control = fileDropDown.controls.addCommand(cmd_def, "UploadCommand", True)
+    # Add a new button before the end of the file menu.
+    control = fileDropDown.controls.addCommand(cmd_def)
 
 
 # Executed when add-in is stopped.
