@@ -96,6 +96,6 @@ Export the active document's component relationships as a mermaid flowchart md f
 
 Creates default folders in the active project if they do not already exist.
 
-**[Install a dedicated Assembly Tab](.docs/Install%20Assembly%20Tab.md)**
+**[Install a dedicated Assembly Tab](./docs/Install%20Assembly%20Tab.md)**
 
 Installs a new Assembly tab in the Fusion design toolbar. Restructures toolbar for better design workflows.  
