@@ -1,5 +1,7 @@
 # Document References
 
+[Back to Readme](../README.md)
+
 ## Description
 
 There are several different tools in Fusion to update a referenced document. These are spread out between the QAT (Quick Access Toolbar), the browser.
@@ -25,3 +27,5 @@ Access to the **Reference Manager** command is from the **QAT** (Quick Access To
 ![access](/docs/assets/refmanager_002.png)
 
 [Back to Readme](../README.md)
+
+IMA LLC Copyright

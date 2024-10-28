@@ -46,7 +46,7 @@ To remove Assemble tools from Mesh Tab toolbar:
 
 On **Mac OS**, edit the existing file here:
 
-> /Users/ <Your User Name> /Library/Application Support/Autodesk/webdeploy/production/ <Current deployment GUID> /Autodesk Fusion 360.app/Contents/Libraries/Applications/Paramesh//UI/ParaMeshUI/Resources/Toolbar/TabToolbars.xml`
+> /Users/ <Your User Name> /Library/Application Support/Autodesk/webdeploy/production/ <Current deployment GUID> /Autodesk Fusion 360.app/Contents/Libraries/Applications/Paramesh//UI/ParaMeshUI/Resources/Toolbar/TabToolbars.xml
 
 On **Windows**, edit the existing file here:
 
