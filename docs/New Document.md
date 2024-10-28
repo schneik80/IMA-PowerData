@@ -4,7 +4,7 @@
 
 ## Description
 
-WARNING - Advanced Configuration required
+**WARNING** - Advanced Configuration required
 
 Fusion has limited tools to control new document creation. The New Document powertool adds a pallet to allow more customization to creating new documents. This tool currently requires advanced configuration and customizations. You will need to edit multiple documents for this command to work correctly.
 
@@ -46,7 +46,7 @@ Copy this value and paste it into the Sample Hub.json.
 
 ```{"HUB_ID":"Enter your own HUB ID HERE"}``` Should then read ```{"HUB_ID":"a.YRdvewrTSFV3M6Y2Gybb3A"}``` keeping in mind that your Hub ID will be different. **Use your HUB id not the values shown here.**
 
-Rename Sample Hub.json to hub.json. **Case matters.**
+Rename _Sample Hub.json_ to _hub.json_. **Case matters.**
 
 Reload the PowerTool add-in.
 
