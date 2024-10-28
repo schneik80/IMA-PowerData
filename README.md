@@ -1,4 +1,4 @@
-# Power Tools for Fusion v0.5
+# Power Tools for Fusion v0.6
 
 Make working as a team, cloud data, and with assemblies more productive.
 
