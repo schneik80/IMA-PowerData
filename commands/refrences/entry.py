@@ -118,7 +118,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
         docChildren = []
         docDrawings = []
         docRelated = []
-        subString = " <-- "
+        subString = " ‹+› "
 
         # Process parent and related data files
         if parentDataFiles:

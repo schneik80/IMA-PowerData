@@ -196,7 +196,7 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
             docActive = app.activeDocument
             docWithVersion = docActive.name
             docSeed = docWithVersion.rsplit(" ", 1)[0]  # trim version
-            docTitle = docSeed + " <-- " + (val.get("name"))
+            docTitle = docSeed + " ‹+› " + (val.get("name"))
             docURN = val.get("urn")
 
     boolCommandInput = inputs.addBoolValueInput("boolvalueInput_", "Auto-Name", True)
@@ -277,7 +277,7 @@ def command_input_changed(args: adsk.core.InputChangedEventArgs):
 
         docURN = (my_DocsDictSorted).get(listOfKeys).get("urn")  # set the urn
         doctempname = (my_DocsDictSorted).get(listOfKeys).get("name")
-        docTitle = docSeed + " <-- " + doctempname
+        docTitle = docSeed + " ‹+› " + doctempname
         stringDocname.value = docTitle
 
     # Auto name or user name input
