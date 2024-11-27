@@ -19,6 +19,7 @@ from .refrences import entry as refrences
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
 from .tabToolbar import entry as tabToolbar
+from .timelinecompute import entry as timelinecompute
 
 # Fusion will automatically call the start() and stop() functions.
 commands = [
@@ -39,6 +40,7 @@ commands = [
     refrences,
     relateddata,
     tabToolbar,
+    timelinecompute,
 ]
 
 
