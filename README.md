@@ -72,9 +72,17 @@ Toggling the data pane is buried three level menu or a keyboard shortcut. This a
 
 This creates an entry in the file menu to manually save a local recovery save.
 
+---
+
+## Productivity tools
+
 **[Insert STEP](./docs/Insert%20Step.md)**
 
 Browse the local device and insert a STEP file into the active document.
+
+**[Fix sketch](./docs/FixSketch.md)**
+
+Find and repair common sketch profile issues.
 
 ---
 
@@ -102,4 +110,5 @@ Creates default folders in the active project if they do not already exist.
 
 **[Install a dedicated Assembly Tab](./docs/Install%20Assembly%20Tab.md)**
 
-Installs a new Assembly tab in the Fusion design toolbar. Restructures toolbar for better design workflows.  
+Installs a new Assembly tab in the Fusion design toolbar. Restructures toolbar for better design workflows.
+
