@@ -11,7 +11,6 @@ from .docinfo import entry as docinfo
 from .exportbomcsv import entry as exportbomcsv
 from .exportgraphviz import entry as exportgraphviz
 from .exportmermaid import entry as exportmermaid
-from .fixsketch import entry as fixsketch
 from .getandupdate import entry as getandupdate
 from .insertSTEP import entry as insertSTEP
 from .new import entry as new
@@ -19,6 +18,7 @@ from .refmanager import entry as refmanager
 from .refrences import entry as refrences
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
+from .sketchfix import entry as sketchfix
 from .tabToolbar import entry as tabToolbar
 from .timelinecompute import entry as timelinecompute
 
@@ -33,7 +33,6 @@ commands = [
     exportbomcsv,
     exportgraphviz,
     exportmermaid,
-    fixsketch,
     getandupdate,
     refresh,
     insertSTEP,
@@ -41,6 +40,7 @@ commands = [
     refmanager,
     refrences,
     relateddata,
+    sketchfix,
     tabToolbar,
     timelinecompute,
 ]
