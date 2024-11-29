@@ -80,9 +80,13 @@ This creates an entry in the file menu to manually save a local recovery save.
 
 Browse the local device and insert a STEP file into the active document.
 
-**[Fix sketch](./docs/FixSketch.md)**
+**[Fix sketch](./docs/SketchFix.md)**
 
 Find and repair common sketch profile issues.
+
+**[Sketch Under-Constrained](./docs/SketchUnder.md)**
+
+Highlight under-constrained sketch entities.
 
 ---
 

@@ -19,6 +19,7 @@ from .refrences import entry as refrences
 from .refresh import entry as refresh
 from .relateddata import entry as relateddata
 from .sketchfix import entry as sketchfix
+from .sketchunderconstrained import entry as sketchunderconstrained
 from .tabToolbar import entry as tabToolbar
 from .timelinecompute import entry as timelinecompute
 
@@ -41,6 +42,7 @@ commands = [
     refrences,
     relateddata,
     sketchfix,
+    sketchunderconstrained,
     tabToolbar,
     timelinecompute,
 ]
