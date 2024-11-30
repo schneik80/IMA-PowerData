@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "TimelineCompute"
+CMD_NAME = "Feature Compute time to CSV"
 CMD_ID = "PT-timelinecompute"
 CMD_Description = "Dump compute time for each timeline feature to a CSV file. Features are sorted by compute time."
 IS_PROMOTED = False

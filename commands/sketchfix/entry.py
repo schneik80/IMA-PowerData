@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "sketchfix"
+CMD_NAME = "Sketch Repair"
 CMD_ID = "PT-SketchFix"
 CMD_Description = (
     "Attempt to repair a sketch with small gaps or disconnected endpoints."

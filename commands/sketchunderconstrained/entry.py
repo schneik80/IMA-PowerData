@@ -6,7 +6,7 @@ from ... import config
 app = adsk.core.Application.get()
 ui = app.userInterface
 
-CMD_NAME = "sketchunderconstrained"
+CMD_NAME = "Sketch Under-constrained"
 CMD_ID = "PT-Sketchunderconstrained"
 CMD_Description = (
     "Highlight sketch objects that are under-constrained"
