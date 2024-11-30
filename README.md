@@ -56,9 +56,9 @@ Provide Cloud Data information on the active document. Reports on Hub, Project a
 
 Show the history of the active document.
 
-**[Export Timeline Feature Compute times to CSV](./docs/Timeline%20Compute%20Times.md)**
+**[Feature Compute to CSV](./docs/Timeline%20Compute%20Times.md)**
 
-Export the active documents timeline feature compute times to a CSV file in a directory of your choosing. Features are sorted by compute time.
+Export the active document's timeline feature compute times to a CSV file in a directory of your choosing. Features are sorted by compute time.
 
 ---
 
@@ -80,7 +80,7 @@ This creates an entry in the file menu to manually save a local recovery save.
 
 Browse the local device and insert a STEP file into the active document.
 
-**[Fix sketch](./docs/SketchFix.md)**
+**[Sketch Repair](./docs/SketchFix.md)**
 
 Find and repair common sketch profile issues.
 
@@ -115,4 +115,3 @@ Creates default folders in the active project if they do not already exist.
 **[Install a dedicated Assembly Tab](./docs/Install%20Assembly%20Tab.md)**
 
 Installs a new Assembly tab in the Fusion design toolbar. Restructures toolbar for better design workflows.
-

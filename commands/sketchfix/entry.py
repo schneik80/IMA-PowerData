@@ -104,24 +104,28 @@ def command_created(args: adsk.core.CommandCreatedEventArgs):
 def command_execute(args: adsk.core.CommandCreatedEventArgs):
     # this handles the document close and reopen
     ui = None
-    product = app.activeProduct
-    design = adsk.fusion.Design.cast(product)
 
     try:
+        app = adsk.core.Application.get()
+        product = app.activeProduct
+        design = adsk.fusion.Design.cast(product)
+        ui = app.userInterface
+
         # Check a Design document is active.
         if not design:
             ui.messageBox("No active Fusion design", "No Design")
             return
 
-        # Check if a sketch is active
-        if not design.activeSketch:
-            ui.messageBox("No sketch is currently active.")
-            return
+        if design.activeEditObject and isinstance(
+            design.activeEditObject, adsk.fusion.Sketch
+        ):
+            app.executeTextCommand("sketch.repairsketch /3")
+            app.executeTextCommand("sketch.repair")
 
-        repairSettings = app.executeTextCommand("sketch.repairsketch /3")
-        print(repairSettings)
-        repair = app.executeTextCommand("sketch.repair")
-        print(repair)
+            ui.messageBox("Sketch repaired.", "Power Tools", 0, 2)
+
+        else:
+            ui.messageBox("No sketch is currently active.")
 
     except:
         if ui:
