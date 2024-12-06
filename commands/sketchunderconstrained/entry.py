@@ -13,12 +13,8 @@ IS_PROMOTED = False
 
 # Global variables by referencing values from /config.py
 WORKSPACE_ID = config.design_workspace
-TAB_ID = config.tools_tab_id
-TAB_NAME = config.my_tab_name
-
-PANEL_ID = config.my_panel_id
-PANEL_NAME = config.my_panel_name
-PANEL_AFTER = config.my_panel_after
+TAB_ID = "SketchTab"
+PANEL_ID = "SketchModifyPanel"
 
 # Resource location for command icons, here we assume a sub folder in this directory named "resources".
 ICON_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resources", "")
@@ -39,21 +35,20 @@ def start():
     futil.add_handler(cmd_def.commandCreated, command_created)
 
     # ******************************** Create Command Control ********************************
-    # Get target workspace for the command.
-    workspace = ui.workspaces.itemById(WORKSPACE_ID)
+    # Get the Sketch tab
+    sketchTab = ui.allToolbarTabs.itemById(TAB_ID)
+    if not sketchTab:
+        ui.messageBox(f"{TAB_ID} tab not found")
+        return
 
-    # Get target toolbar tab for the command and create the tab if necessary.
-    toolbar_tab = workspace.toolbarTabs.itemById(TAB_ID)
-    if toolbar_tab is None:
-        toolbar_tab = workspace.toolbarTabs.add(TAB_ID, TAB_NAME)
-
-    # Get target panel for the command and and create the panel if necessary.
-    panel = toolbar_tab.toolbarPanels.itemById(PANEL_ID)
-    if panel is None:
-        panel = toolbar_tab.toolbarPanels.add(PANEL_ID, PANEL_NAME, PANEL_AFTER, False)
+        # Get the Modify panel in the Sketch tab
+    modifyPanel = sketchTab.toolbarPanels.itemById(PANEL_ID)
+    if not modifyPanel:
+        ui.messageBox(f"{PANEL_ID} panel not found in {TAB_ID} tab")
+        return
 
     # Create the command control, i.e. a button in the UI.
-    control = panel.controls.addCommand(cmd_def, "PT-assemblystats", True)
+    control = modifyPanel.controls.addCommand(cmd_def)
 
     # Now you can set various options on the control such as promoting it to always be shown.
     control.isPromoted = IS_PROMOTED
@@ -111,19 +106,20 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Check a Design document is active.
         if not design:
-            ui.messageBox("No active Fusion design", "No Design")
+            ui.messageBox("No active Fusion design", CMD_ID)
             return
 
         if design.activeEditObject and isinstance(
             design.activeEditObject, adsk.fusion.Sketch
         ):
             under = app.executeTextCommand("Sketch.ShowUnderconstrained")
+            futil.log(f"{CMD_NAME} {under}.")
 
-            futil.log(under)
-            ui.messageBox(under, "Under-constrained Sketch Objects", 0, 2)
+            ui.messageBox(under, CMD_ID, 0, 2)
+
 
         else:
-            ui.messageBox("No sketch is currently active.")
+            ui.messageBox("No sketch is currently active.", CMD_ID)
 
     except:
         if ui:

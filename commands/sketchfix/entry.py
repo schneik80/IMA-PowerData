@@ -8,9 +8,7 @@ ui = app.userInterface
 
 CMD_NAME = "Sketch Repair"
 CMD_ID = "PT-SketchFix"
-CMD_Description = (
-    "Attempt to repair a sketch with small gaps or disconnected endpoints."
-)
+CMD_Description = "Attempt to repair a sketch with small gaps or disconnected endpoints."
 IS_PROMOTED = False
 
 # Global variables by referencing values from /config.py
@@ -108,7 +106,7 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
 
         # Check a Design document is active.
         if not design:
-            ui.messageBox("No active Fusion design", "No Design")
+            ui.messageBox("No active Fusion design", CMD_NAME)
             return
 
         if design.activeEditObject and isinstance(
@@ -117,10 +115,11 @@ def command_execute(args: adsk.core.CommandCreatedEventArgs):
             app.executeTextCommand("sketch.repairsketch /3")
             app.executeTextCommand("sketch.repair")
 
-            ui.messageBox("Sketch repaired.", "Power Tools", 0, 2)
+            ui.messageBox("Sketch repaired.", CMD_NAME, 0, 2)
+            futil.log(f"{CMD_NAME} Sketch repaired.")
 
         else:
-            ui.messageBox("No sketch is currently active.")
+            ui.messageBox("No sketch is currently active.", CMD_NAME)
 
     except:
         if ui:
